@@ -39,11 +39,6 @@
     button:hover {
       background: #0ea5e9;
     }
-
-    hr {
-      border: 1px solid #334155;
-      margin: 30px 0;
-    }
   </style>
 
 </head>
@@ -56,9 +51,11 @@
     <p id="track">AI Artist - Future Sound</p>
     <p id="genre">Genre: Electronic</p>
 
-    <audio id="player" controls autoplay>
-      <source src="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one" type="audio/mpeg">
+    <!-- FIXED PLAYER -->
+    <audio id="player" controls>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
+
   </div>
 
   <div class="card">
@@ -108,8 +105,11 @@
       updatePlays();
       updateTopStats();
 
-      document.getElementById("player").load();
-      document.getElementById("player").play();
+      // Force reload and play
+      let player = document.getElementById("player");
+      player.pause();
+      player.currentTime = 0;
+      player.play();
     }
 
     function updatePlays() {
