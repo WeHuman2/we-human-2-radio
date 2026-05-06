@@ -2,51 +2,94 @@
 <html>
 <head>
   <title>We Human 2 Radio</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #38bdf8;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 12px;
+      max-width: 500px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    button {
+      background: #38bdf8;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    hr {
+      border: 1px solid #334155;
+      margin: 30px 0;
+    }
+  </style>
+
 </head>
 <body>
 
-  <h1>We Human 2 Radio 🎧</h1>
+  <h1>🎧 We Human 2 Radio</h1>
 
-  <h2>Now Playing</h2>
-  <p id="track">AI Artist - Future Sound</p>
-  <p id="genre">Genre: Electronic</p>
+  <div class="card">
+    <h2>Now Playing</h2>
+    <p id="track">AI Artist - Future Sound</p>
+    <p id="genre">Genre: Electronic</p>
 
-  <audio id="player" controls autoplay>
-    <source src="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one" type="audio/mpeg">
-  </audio>
+    <audio id="player" controls autoplay>
+      <source src="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one" type="audio/mpeg">
+    </audio>
+  </div>
 
-  <hr>
+  <div class="card">
+    <h2>🎶 Music Library</h2>
 
-  <h2>🎶 Music Library</h2>
+    <button onclick="playTrack('AI Artist - Future Sound', 'Electronic', 'AI Artist')">
+      Future Sound
+    </button>
 
-  <button onclick="playTrack('AI Artist - Future Sound', 'Electronic', 'AI Artist')">
-    Future Sound
-  </button>
+    <button onclick="playTrack('NeuroBeats - Digital Dreams', 'Hip-Hop', 'NeuroBeats')">
+      Digital Dreams
+    </button>
 
-  <button onclick="playTrack('NeuroBeats - Digital Dreams', 'Hip-Hop', 'NeuroBeats')">
-    Digital Dreams
-  </button>
+    <button onclick="playTrack('EchoSynth - Night Pulse', 'Synthwave', 'EchoSynth')">
+      Night Pulse
+    </button>
+  </div>
 
-  <button onclick="playTrack('EchoSynth - Night Pulse', 'Synthwave', 'EchoSynth')">
-    Night Pulse
-  </button>
+  <div class="card" id="plays"></div>
 
-  <hr>
+  <div class="card">
+    <h2>🏆 Royalty Dashboard</h2>
+    <div id="topTrack"></div>
+    <div id="topArtist"></div>
+  </div>
 
-  <div id="plays"></div>
-
-  <hr>
-
-  <h2>🏆 Royalty Dashboard</h2>
-  <div id="topTrack"></div>
-  <div id="topArtist"></div>
-
-  <hr>
-
-  <h2>🎖 AI Music Awards</h2>
-  <button onclick="generateAwards()">Generate Awards</button>
-
-  <div id="awards"></div>
+  <div class="card">
+    <h2>🎖 AI Music Awards</h2>
+    <button onclick="generateAwards()">Generate Awards</button>
+    <div id="awards"></div>
+  </div>
 
   <script>
     let playCounts = {};
@@ -128,9 +171,8 @@
       }
 
       let result = "<h3>🏆 Award Winners</h3>";
-
-      result += "<p><strong>Top Track of the Year:</strong> " + topTrack + "</p>";
-      result += "<p><strong>Top Artist of the Year:</strong> " + topArtist + "</p>";
+      result += "<p><strong>Top Track:</strong> " + topTrack + "</p>";
+      result += "<p><strong>Top Artist:</strong> " + topArtist + "</p>";
 
       document.getElementById("awards").innerHTML = result;
     }
