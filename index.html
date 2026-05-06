@@ -1,17 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>We Human 2 Radio</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      max-width: 500px;
+    }
+
+    button {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #38bdf8;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🎧 We Human 2 Radio</h1>
+
+<!-- PLAYER -->
 <div class="card">
-  <h2>⚖️ Terms & Conditions</h2>
-
-  <p><strong>Platform Status:</strong> We Human 2 Radio is a prototype platform designed for demonstration and development purposes only.</p>
-
-  <p><strong>Content:</strong> Music and artists featured may be AI-generated or experimental. No ownership or licensing guarantees are made.</p>
-
-  <p><strong>User Responsibility:</strong> Users agree not to upload, distribute, or use copyrighted material without proper rights.</p>
-
-  <p><strong>No Liability:</strong> The platform creators are not responsible for any misuse, third-party content, or damages resulting from use.</p>
-
-  <p><strong>No Guarantees:</strong> Features such as royalties, awards, and tracking are conceptual and not financially binding.</p>
-
-  <p><strong>Privacy:</strong> This platform does not collect personal user data at this stage.</p>
-
-  <p><strong>Acceptance:</strong> By using this platform, you agree to these terms.</p>
+  <h2>Now Playing</h2>
+  <p id="track">AI Artist - Future Sound</p>
+  <audio controls id="player">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+  </audio>
 </div>
+
+<!-- MUSIC -->
+<div class="card">
+  <h2>Music Library</h2>
+
+  <button onclick="playTrack('Future Sound')">Future Sound</button>
+  <button onclick="playTrack('Digital Dreams')">Digital Dreams</button>
+  <button onclick="playTrack('Night Pulse')">Night Pulse</button>
+</div>
+
+<!-- TERMS -->
+<div class="card">
+  <h2>Terms & Conditions</h2>
+  <p>This is a prototype platform. No real music rights or royalties are active.</p>
+</div>
+
+<script>
+function playTrack(name){
+  document.getElementById("track").innerText = name;
+
+  let player = document.getElementById("player");
+  player.pause();
+  player.currentTime = 0;
+  player.play();
+}
+</script>
+
+</body>
+</html>
