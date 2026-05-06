@@ -20,23 +20,32 @@
       max-width: 500px;
     }
 
-    input {
+    input, textarea {
       padding: 8px;
       margin: 5px;
       border-radius: 6px;
       border: none;
+      width: 90%;
     }
 
     button {
-      padding: 8px 12px;
+      padding: 10px;
       border: none;
       border-radius: 6px;
       background: #38bdf8;
       cursor: pointer;
+      margin-top: 10px;
     }
 
     .artist {
       margin: 15px 0;
+      cursor: pointer;
+    }
+
+    label {
+      display: block;
+      margin: 5px;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -55,14 +64,27 @@
   </audio>
 </div>
 
-<!-- UPLOAD UI -->
+<!-- UPLOAD SYSTEM -->
 <div class="card">
-  <h2>➕ Add Artist</h2>
+  <h2>⬆️ Upload Artist Track</h2>
 
   <input id="artistName" placeholder="Artist Name"><br>
-  <input id="trackName" placeholder="Track Name"><br>
+  <input id="trackName" placeholder="Track Title"><br>
 
-  <button onclick="addArtist()">Add Artist</button>
+  <!-- NEW AUDIO UPLOAD -->
+  <input type="file" id="audioFile" accept="audio/*"><br>
+
+  <textarea id="humanContribution" placeholder="Describe your human contribution (required)"></textarea>
+
+  <label>
+    <input type="checkbox" id="terms"> I agree to Terms of Service
+  </label>
+
+  <label>
+    <input type="checkbox" id="noSamples"> I confirm no unlicensed samples
+  </label>
+
+  <button onclick="uploadTrack()">Submit Track</button>
 </div>
 
 <!-- ARTISTS -->
@@ -73,9 +95,21 @@
 
 <script>
 let artists = [
-  {name: "AI Artist", track: "Future Sound"},
-  {name: "NeuroBeats", track: "Digital Dreams"},
-  {name: "EchoSynth", track: "Night Pulse"}
+  {
+    name: "AI Artist",
+    track: "Future Sound",
+    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+  },
+  {
+    name: "NeuroBeats",
+    track: "Digital Dreams",
+    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+  },
+  {
+    name: "EchoSynth",
+    track: "Night Pulse",
+    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+  }
 ];
 
 function renderArtists(){
@@ -83,7 +117,7 @@ function renderArtists(){
 
   artists.forEach(a => {
     output += `
-      <div class="artist" onclick="playTrack('${a.name} - ${a.track}')">
+      <div class="artist" onclick="playTrack('${a.name} - ${a.track}', '${a.url}')">
         <strong>${a.name}</strong><br>
         ${a.track}<br>
         <button>Play</button>
@@ -94,26 +128,71 @@ function renderArtists(){
   document.getElementById("artistList").innerHTML = output;
 }
 
-function addArtist(){
+function uploadTrack(){
   let name = document.getElementById("artistName").value;
   let track = document.getElementById("trackName").value;
+  let contribution = document.getElementById("humanContribution").value;
+  let terms = document.getElementById("terms").checked;
+  let noSamples = document.getElementById("noSamples").checked;
+  let fileInput = document.getElementById("audioFile");
 
-  if(!name || !track){
-    alert("Enter artist and track");
+  // LEGAL CHECKS
+  if(!terms){
+    alert("You must accept Terms of Service");
     return;
   }
 
-  artists.push({name, track});
+  if(!noSamples){
+    alert("You must confirm no unlicensed samples");
+    return;
+  }
+
+  if(!contribution.trim()){
+    alert("Human contribution is required");
+    return;
+  }
+
+  if(!name || !track){
+    alert("Artist and track required");
+    return;
+  }
+
+  if(fileInput.files.length === 0){
+    alert("You must upload an audio file");
+    return;
+  }
+
+  // CREATE TEMP FILE URL
+  let fileURL = URL.createObjectURL(fileInput.files[0]);
+
+  artists.push({
+    name: name,
+    track: track,
+    url: fileURL
+  });
+
   renderArtists();
 
+  alert("Track uploaded and ready to play");
+
+  // CLEAR FORM
   document.getElementById("artistName").value = "";
   document.getElementById("trackName").value = "";
+  document.getElementById("humanContribution").value = "";
+  document.getElementById("terms").checked = false;
+  document.getElementById("noSamples").checked = false;
+  fileInput.value = "";
 }
 
-function playTrack(name){
+function playTrack(name, url){
   document.getElementById("track").innerText = name;
 
   let player = document.getElementById("player");
+
+  if(url){
+    player.src = url;
+  }
+
   player.pause();
   player.currentTime = 0;
   player.play();
