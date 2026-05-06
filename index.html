@@ -71,7 +71,6 @@
   <input id="artistName" placeholder="Artist Name"><br>
   <input id="trackName" placeholder="Track Title"><br>
 
-  <!-- NEW AUDIO UPLOAD -->
   <input type="file" id="audioFile" accept="audio/*"><br>
 
   <textarea id="humanContribution" placeholder="Describe your human contribution (required)"></textarea>
@@ -136,7 +135,6 @@ function uploadTrack(){
   let noSamples = document.getElementById("noSamples").checked;
   let fileInput = document.getElementById("audioFile");
 
-  // LEGAL CHECKS
   if(!terms){
     alert("You must accept Terms of Service");
     return;
@@ -162,7 +160,6 @@ function uploadTrack(){
     return;
   }
 
-  // CREATE TEMP FILE URL
   let fileURL = URL.createObjectURL(fileInput.files[0]);
 
   artists.push({
@@ -175,7 +172,6 @@ function uploadTrack(){
 
   alert("Track uploaded and ready to play");
 
-  // CLEAR FORM
   document.getElementById("artistName").value = "";
   document.getElementById("trackName").value = "";
   document.getElementById("humanContribution").value = "";
