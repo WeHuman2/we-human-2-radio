@@ -135,6 +135,7 @@ function uploadTrack(){
   let noSamples = document.getElementById("noSamples").checked;
   let fileInput = document.getElementById("audioFile");
 
+  // VALIDATION
   if(!terms){
     alert("You must accept Terms of Service");
     return;
@@ -160,24 +161,44 @@ function uploadTrack(){
     return;
   }
 
-  let fileURL = URL.createObjectURL(fileInput.files[0]);
+  // SEND TO BACKEND
+  const formData = new FormData();
+  formData.append("audio", fileInput.files[0]);
+  formData.append("artistName", name);
+  formData.append("trackName", track);
+  formData.append("humanContribution", contribution);
 
-  artists.push({
-    name: name,
-    track: track,
-    url: fileURL
+  fetch("http://localhost:3000/upload", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message);
+
+    // STILL SHOW LOCALLY
+    let fileURL = URL.createObjectURL(fileInput.files[0]);
+
+    artists.push({
+      name: name,
+      track: track,
+      url: fileURL
+    });
+
+    renderArtists();
+
+    // CLEAR FORM
+    document.getElementById("artistName").value = "";
+    document.getElementById("trackName").value = "";
+    document.getElementById("humanContribution").value = "";
+    document.getElementById("terms").checked = false;
+    document.getElementById("noSamples").checked = false;
+    fileInput.value = "";
+  })
+  .catch(err => {
+    alert("Upload failed (check console)");
+    console.error(err);
   });
-
-  renderArtists();
-
-  alert("Track uploaded and ready to play");
-
-  document.getElementById("artistName").value = "";
-  document.getElementById("trackName").value = "";
-  document.getElementById("humanContribution").value = "";
-  document.getElementById("terms").checked = false;
-  document.getElementById("noSamples").checked = false;
-  fileInput.value = "";
 }
 
 function playTrack(name, url){
