@@ -5,16 +5,11 @@
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #0f172a;
+      font-family: Arial;
+      background: #0f172a;
       color: white;
-      margin: 0;
-      padding: 20px;
       text-align: center;
-    }
-
-    h1 {
-      color: #38bdf8;
+      padding: 20px;
     }
 
     .card {
@@ -23,30 +18,25 @@
       margin: 20px auto;
       border-radius: 12px;
       max-width: 500px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
-    .artist {
-      margin-bottom: 20px;
-      cursor: pointer;
-    }
-
-    .artist img {
-      border-radius: 50%;
+    input {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 6px;
+      border: none;
     }
 
     button {
-      background: #38bdf8;
-      border: none;
       padding: 8px 12px;
-      margin-top: 5px;
-      border-radius: 8px;
+      border: none;
+      border-radius: 6px;
+      background: #38bdf8;
       cursor: pointer;
-      font-weight: bold;
     }
 
-    button:hover {
-      background: #0ea5e9;
+    .artist {
+      margin: 15px 0;
     }
   </style>
 </head>
@@ -59,85 +49,69 @@
 <div class="card">
   <h2>Now Playing</h2>
   <p id="track">AI Artist - Future Sound</p>
-  <p id="genre">Genre: Electronic</p>
 
   <audio id="player" controls>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
   </audio>
 </div>
 
+<!-- UPLOAD UI -->
+<div class="card">
+  <h2>➕ Add Artist</h2>
+
+  <input id="artistName" placeholder="Artist Name"><br>
+  <input id="trackName" placeholder="Track Name"><br>
+
+  <button onclick="addArtist()">Add Artist</button>
+</div>
+
 <!-- ARTISTS -->
 <div class="card">
   <h2>🎤 Artists</h2>
-
-  <div class="artist" onclick="playTrack('AI Artist - Future Sound','Electronic','AI Artist')">
-    <img src="https://via.placeholder.com/120"><br>
-    <strong>AI Artist</strong><br>
-    <small>Electronic</small><br>
-    <button>Play Track</button>
-  </div>
-
-  <div class="artist" onclick="playTrack('NeuroBeats - Digital Dreams','Hip-Hop','NeuroBeats')">
-    <img src="https://via.placeholder.com/120"><br>
-    <strong>NeuroBeats</strong><br>
-    <small>Hip-Hop</small><br>
-    <button>Play Track</button>
-  </div>
-
-  <div class="artist" onclick="playTrack('EchoSynth - Night Pulse','Synthwave','EchoSynth')">
-    <img src="https://via.placeholder.com/120"><br>
-    <strong>EchoSynth</strong><br>
-    <small>Synthwave</small><br>
-    <button>Play Track</button>
-  </div>
-
-</div>
-
-<!-- PLAY COUNTS -->
-<div class="card" id="plays">
-  <h3>📊 Play Counts</h3>
-</div>
-
-<!-- DASHBOARD -->
-<div class="card">
-  <h2>🏆 Royalty Dashboard</h2>
-  <div id="topTrack">Top Track: None</div>
-  <div id="topArtist">Top Artist: None</div>
-</div>
-
-<!-- AWARDS -->
-<div class="card">
-  <h2>🎖 AI Music Awards</h2>
-  <button onclick="generateAwards()">Generate Awards</button>
-  <div id="awards"></div>
-</div>
-
-<!-- TERMS -->
-<div class="card">
-  <h2>⚖️ Terms & Conditions</h2>
-  <p>This platform is a prototype for demonstration only.</p>
-  <p>Music may be AI-generated. No ownership or licensing is guaranteed.</p>
-  <p>No real royalties or payments are active.</p>
-  <p>Users are responsible for any content they use or upload.</p>
-  <p>No personal data is collected.</p>
+  <div id="artistList"></div>
 </div>
 
 <script>
-let playCounts = {};
-let artistCounts = {};
+let artists = [
+  {name: "AI Artist", track: "Future Sound"},
+  {name: "NeuroBeats", track: "Digital Dreams"},
+  {name: "EchoSynth", track: "Night Pulse"}
+];
 
-function playTrack(name, genre, artist) {
+function renderArtists(){
+  let output = "";
+
+  artists.forEach(a => {
+    output += `
+      <div class="artist" onclick="playTrack('${a.name} - ${a.track}')">
+        <strong>${a.name}</strong><br>
+        ${a.track}<br>
+        <button>Play</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("artistList").innerHTML = output;
+}
+
+function addArtist(){
+  let name = document.getElementById("artistName").value;
+  let track = document.getElementById("trackName").value;
+
+  if(!name || !track){
+    alert("Enter artist and track");
+    return;
+  }
+
+  artists.push({name, track});
+  renderArtists();
+
+  document.getElementById("artistName").value = "";
+  document.getElementById("trackName").value = "";
+}
+
+function playTrack(name){
   document.getElementById("track").innerText = name;
-  document.getElementById("genre").innerText = "Genre: " + genre;
-
-  if (!playCounts[name]) playCounts[name] = 0;
-  playCounts[name]++;
-
-  if (!artistCounts[artist]) artistCounts[artist] = 0;
-  artistCounts[artist]++;
-
-  updatePlays();
-  updateTopStats();
 
   let player = document.getElementById("player");
   player.pause();
@@ -145,68 +119,7 @@ function playTrack(name, genre, artist) {
   player.play();
 }
 
-function updatePlays() {
-  let output = "<h3>📊 Play Counts</h3><ul>";
-  for (let track in playCounts) {
-    output += "<li>" + track + ": " + playCounts[track] + " plays</li>";
-  }
-  output += "</ul>";
-  document.getElementById("plays").innerHTML = output;
-}
-
-function updateTopStats() {
-  let topTrack = "None";
-  let maxTrack = 0;
-
-  for (let t in playCounts) {
-    if (playCounts[t] > maxTrack) {
-      maxTrack = playCounts[t];
-      topTrack = t;
-    }
-  }
-
-  let topArtist = "None";
-  let maxArtist = 0;
-
-  for (let a in artistCounts) {
-    if (artistCounts[a] > maxArtist) {
-      maxArtist = artistCounts[a];
-      topArtist = a;
-    }
-  }
-
-  document.getElementById("topTrack").innerText =
-    "Top Track: " + topTrack + " (" + maxTrack + " plays)";
-
-  document.getElementById("topArtist").innerText =
-    "Top Artist: " + topArtist + " (" + maxArtist + " plays)";
-}
-
-function generateAwards() {
-  let topTrack = "None";
-  let maxTrack = 0;
-
-  for (let t in playCounts) {
-    if (playCounts[t] > maxTrack) {
-      maxTrack = playCounts[t];
-      topTrack = t;
-    }
-  }
-
-  let topArtist = "None";
-  let maxArtist = 0;
-
-  for (let a in artistCounts) {
-    if (artistCounts[a] > maxArtist) {
-      maxArtist = artistCounts[a];
-      topArtist = a;
-    }
-  }
-
-  document.getElementById("awards").innerHTML =
-    "<p><strong>Top Track:</strong> " + topTrack + "</p>" +
-    "<p><strong>Top Artist:</strong> " + topArtist + "</p>";
-}
+renderArtists();
 </script>
 
 </body>
