@@ -4,10 +4,52 @@
   <title>We Human 2 Radio</title>
 </head>
 <body>
+
   <h1>We Human 2 Radio 🎧</h1>
-  <audio controls autoplay>
-    <source src="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one" type="audio/mpeg">
-    Your browser does not support audio.
+
+  <h2>Now Playing</h2>
+  <p id="track">AI Artist - Future Sound</p>
+  <p id="genre">Genre: Electronic</p>
+
+  <audio id="player" controls autoplay>
+    <source id="audioSource" src="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one" type="audio/mpeg">
   </audio>
+
+  <hr>
+
+  <h2>🎶 Music Library</h2>
+
+  <button onclick="playTrack('AI Artist - Future Sound', 'Electronic')">
+    Future Sound
+  </button>
+
+  <button onclick="playTrack('NeuroBeats - Digital Dreams', 'Hip-Hop')">
+    Digital Dreams
+  </button>
+
+  <button onclick="playTrack('EchoSynth - Night Pulse', 'Synthwave')">
+    Night Pulse
+  </button>
+
+  <hr>
+
+  <h2>🤖 Featured AI Artists</h2>
+  <ul>
+    <li>NeuroBeats</li>
+    <li>EchoSynth</li>
+    <li>DataWave</li>
+  </ul>
+
+  <script>
+    function playTrack(name, genre) {
+      document.getElementById("track").innerText = name;
+      document.getElementById("genre").innerText = "Genre: " + genre;
+
+      // For now, still uses same stream (we’ll replace later)
+      document.getElementById("player").load();
+      document.getElementById("player").play();
+    }
+  </script>
+
 </body>
 </html>
