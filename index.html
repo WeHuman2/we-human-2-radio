@@ -12,42 +12,101 @@
   <p id="genre">Genre: Electronic</p>
 
   <audio id="player" controls autoplay>
-    <source id="audioSource" src="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one" type="audio/mpeg">
+    <source src="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one" type="audio/mpeg">
   </audio>
 
   <hr>
 
   <h2>🎶 Music Library</h2>
 
-  <button onclick="playTrack('AI Artist - Future Sound', 'Electronic')">
+  <button onclick="playTrack('AI Artist - Future Sound', 'Electronic', 'AI Artist')">
     Future Sound
   </button>
 
-  <button onclick="playTrack('NeuroBeats - Digital Dreams', 'Hip-Hop')">
+  <button onclick="playTrack('NeuroBeats - Digital Dreams', 'Hip-Hop', 'NeuroBeats')">
     Digital Dreams
   </button>
 
-  <button onclick="playTrack('EchoSynth - Night Pulse', 'Synthwave')">
+  <button onclick="playTrack('EchoSynth - Night Pulse', 'Synthwave', 'EchoSynth')">
     Night Pulse
   </button>
 
   <hr>
 
-  <h2>🤖 Featured AI Artists</h2>
-  <ul>
-    <li>NeuroBeats</li>
-    <li>EchoSynth</li>
-    <li>DataWave</li>
-  </ul>
+  <div id="plays"></div>
+
+  <hr>
+
+  <h2>🏆 Royalty Dashboard</h2>
+  <div id="topTrack"></div>
+  <div id="topArtist"></div>
 
   <script>
-    function playTrack(name, genre) {
+    let playCounts = {};
+    let artistCounts = {};
+
+    function playTrack(name, genre, artist) {
+      // Update now playing
       document.getElementById("track").innerText = name;
       document.getElementById("genre").innerText = "Genre: " + genre;
 
-      // For now, still uses same stream (we’ll replace later)
+      // Track plays
+      if (!playCounts[name]) {
+        playCounts[name] = 0;
+      }
+      playCounts[name]++;
+
+      // Track artist plays
+      if (!artistCounts[artist]) {
+        artistCounts[artist] = 0;
+      }
+      artistCounts[artist]++;
+
+      updatePlays();
+      updateTopStats();
+
+      // Reload player
       document.getElementById("player").load();
       document.getElementById("player").play();
+    }
+
+    function updatePlays() {
+      let output = "<h3>📊 Play Counts</h3><ul>";
+
+      for (let track in playCounts) {
+        output += "<li>" + track + ": " + playCounts[track] + " plays</li>";
+      }
+
+      output += "</ul>";
+      document.getElementById("plays").innerHTML = output;
+    }
+
+    function updateTopStats() {
+      let topTrack = "";
+      let maxTrackPlays = 0;
+
+      for (let track in playCounts) {
+        if (playCounts[track] > maxTrackPlays) {
+          maxTrackPlays = playCounts[track];
+          topTrack = track;
+        }
+      }
+
+      let topArtist = "";
+      let maxArtistPlays = 0;
+
+      for (let artist in artistCounts) {
+        if (artistCounts[artist] > maxArtistPlays) {
+          maxArtistPlays = artistCounts[artist];
+          topArtist = artist;
+        }
+      }
+
+      document.getElementById("topTrack").innerHTML =
+        "<strong>Top Track:</strong> " + topTrack + " (" + maxTrackPlays + " plays)";
+
+      document.getElementById("topArtist").innerHTML =
+        "<strong>Top Artist:</strong> " + topArtist + " (" + maxArtistPlays + " plays)";
     }
   </script>
 
