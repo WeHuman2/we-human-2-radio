@@ -1,253 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>We Human 2 Radio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WH2 Radio</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      background: #050505;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-@media (max-width: 768px) {
+<style>
 
-img {
-width: 95% !important;
+body{
+background:black;
+color:white;
+font-family:Arial, sans-serif;
+margin:0;
+padding:0;
+text-align:center;
 }
 
-.card {
-width: 95%;
-padding: 15px;
+.header{
+padding:30px;
+background:#111;
+border-bottom:2px solid red;
 }
 
-audio {
-width: 100%;
+.header h1{
+font-size:50px;
+color:red;
+margin:0;
 }
 
-input, textarea, button {
-width: 95%;
-font-size: 16px;
-margin-top: 10px;
+.header p{
+color:#ccc;
+font-size:18px;
 }
 
-h1, h2 {
-font-size: 24px;
-}
-}
-    .card {
-      background: #111111;
-      padding: 20px;
-      margin: 20px auto;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #E10613;
-      max-width: 500px;
-    }
-audio {
-width: 90%;
-margin-top: 15px;
-filter: drop-shadow(0 0 10px #E10613);
+.player{
+margin-top:40px;
+padding:20px;
 }
 
-input, textarea {
-    input, textarea {
-      padding: 8px;
-      margin: 5px;
-      border-radius: 6px;
-      border: none;
-      width: 90%;
-    }
+.album-art{
+width:250px;
+height:250px;
+border-radius:20px;
+object-fit:cover;
+border:4px solid red;
+}
 
-    button {
-      padding: 10px;
-      border: none;
-      border-radius: 6px;
-      background: #38bdf8;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+.song-title{
+font-size:30px;
+margin-top:20px;
+}
 
-    .artist {
-      margin: 15px 0;
-      cursor: pointer;
-    }
+.artist{
+font-size:20px;
+color:#999;
+}
 
-    label {
-      display: block;
-      margin: 5px;
-      font-size: 14px;
-    }
-  </style>
+audio{
+margin-top:20px;
+width:80%;
+}
+
+.footer{
+margin-top:50px;
+padding:20px;
+background:#111;
+color:#666;
+}
+
+</style>
 </head>
 
 <body>
 
-<img src="116b8d754c788172b3e00e3a56288be3640ee5f645684bf3281fa6899a395c11.png" width="100%">
-
-<!-- PLAYER -->
-<div class="card">
-  <h2>Now Playing</h2>
-  <p id="track">AI Artist - Future Sound</p>
-
-  <audio id="player" controls>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-  </audio>
+<div class="header">
+<h1>WH2 RADIO</h1>
+<p>AI Curated. Human Approved.</p>
 </div>
 
-<!-- UPLOAD SYSTEM -->
-<div class="card">
-  <h2>⬆️ Upload Artist Track</h2>
+<div class="player">
 
-  <input id="artistName" placeholder="Artist Name"><br>
-  <input id="trackName" placeholder="Track Title"><br>
+<img class="album-art" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1000" />
 
-  <input type="file" id="audioFile" accept="audio/*"><br>
-
-  <textarea id="humanContribution" placeholder="Describe your human contribution (required)"></textarea>
-
-  <label>
-    <input type="checkbox" id="terms"> I agree to Terms of Service
-  </label>
-
-  <label>
-    <input type="checkbox" id="noSamples"> I confirm no unlicensed samples
-  </label>
-
-  <button onclick="uploadTrack()">Submit Track</button>
+<div class="song-title">
+Midnight Vibes
 </div>
 
-<!-- ARTISTS -->
-<div class="card">
-  <h2>🎤 Artists</h2>
-  <div id="artistList"></div>
+<div class="artist">
+WH2 Artist
 </div>
 
-<script>
-let artists = [
-  {
-    name: "AI Artist",
-    track: "Future Sound",
-    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-  },
-  {
-    name: "NeuroBeats",
-    track: "Digital Dreams",
-    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-  },
-  {
-    name: "EchoSynth",
-    track: "Night Pulse",
-    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-  }
-];
+<audio controls>
+<source src="YOUR-SONG.mp3" type="audio/mpeg">
+</audio>
 
-function renderArtists(){
-  let output = "";
+</div>
 
-  artists.forEach(a => {
-    output += `
-      <div class="artist" onclick="playTrack('${a.name} - ${a.track}', '${a.url}')">
-        <strong>${a.name}</strong><br>
-        ${a.track}<br>
-        <button>Play</button>
-      </div>
-    `;
-  });
-
-  document.getElementById("artistList").innerHTML = output;
-}
-
-function uploadTrack(){
-  let name = document.getElementById("artistName").value;
-  let track = document.getElementById("trackName").value;
-  let contribution = document.getElementById("humanContribution").value;
-  let terms = document.getElementById("terms").checked;
-  let noSamples = document.getElementById("noSamples").checked;
-  let fileInput = document.getElementById("audioFile");
-
-  // VALIDATION
-  if(!terms){
-    alert("You must accept Terms of Service");
-    return;
-  }
-
-  if(!noSamples){
-    alert("You must confirm no unlicensed samples");
-    return;
-  }
-
-  if(!contribution.trim()){
-    alert("Human contribution is required");
-    return;
-  }
-
-  if(!name || !track){
-    alert("Artist and track required");
-    return;
-  }
-
-  if(fileInput.files.length === 0){
-    alert("You must upload an audio file");
-    return;
-  }
-
-  // SEND TO BACKEND
-  const formData = new FormData();
-  formData.append("audio", fileInput.files[0]);
-  formData.append("artistName", name);
-  formData.append("trackName", track);
-  formData.append("humanContribution", contribution);
-
-  fetch("http://localhost:3000/upload", {
-    method: "POST",
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert(data.message);
-
-    // STILL SHOW LOCALLY
-    let fileURL = URL.createObjectURL(fileInput.files[0]);
-
-    artists.push({
-      name: name,
-      track: track,
-      url: fileURL
-    });
-
-    renderArtists();
-
-    // CLEAR FORM
-    document.getElementById("artistName").value = "";
-    document.getElementById("trackName").value = "";
-    document.getElementById("humanContribution").value = "";
-    document.getElementById("terms").checked = false;
-    document.getElementById("noSamples").checked = false;
-    fileInput.value = "";
-  })
-  .catch(err => {
-    alert("Upload failed (check console)");
-    console.error(err);
-  });
-}
-
-function playTrack(name, url){
-  document.getElementById("track").innerText = name;
-
-  let player = document.getElementById("player");
-
-  if(url){
-    player.src = url;
-  }
-
-  player.pause();
-  player.currentTime = 0;
-  player.play();
-}
-
-renderArtists();
-</script>
+<div class="footer">
+WH2 Radio © 2026
+</div>
 
 </body>
 </html>
