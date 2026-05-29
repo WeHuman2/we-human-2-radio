@@ -38,13 +38,9 @@ color:white;
 text-shadow:0 0 18px red;
 }
 
-.logo span{
-color:red;
-}
+.logo span{color:red;}
 
-p{
-color:#ccc;
-}
+p{color:#ccc;}
 
 input{
 width:90%;
@@ -120,7 +116,7 @@ const errorBox = document.getElementById("error");
 
 errorBox.innerText = "Checking login...";
 
-firebase.auth().signInWithEmailAndPassword(email,password)
+firebase.auth().signInWithEmailAndPassword(email, password)
 .then(function(userCredential){
 const userEmail = userCredential.user.email.toLowerCase();
 
