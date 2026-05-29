@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Music to WH2 Radio</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
+.container{width:90%;max-width:650px;margin:40px auto;background:#111;border:1px solid red;border-radius:25px;padding:30px;}
+.logo{text-align:center;font-size:58px;font-weight:900;text-shadow:0 0 18px red;}
+.logo span{color:red;}
+h1{text-align:center;color:red;}
+p{color:#ccc;line-height:1.5;}
+input,textarea{width:95%;padding:14px;margin:10px 0;background:#000;color:white;border:1px solid red;border-radius:12px;font-size:15px;}
+button{width:100%;padding:15px;margin-top:15px;background:red;color:white;border:none;border-radius:50px;font-weight:bold;font-size:16px;}
+label{display:block;color:#ccc;font-size:14px;line-height:1.5;margin-top:15px;}
+.message{margin-top:15px;color:#ff7777;text-align:center;}
+a{color:red;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">WH<span>2</span></div>
+
+<h1>Submit Music to WH2 Radio</h1>
+
+<p>Artists can submit music for WH2 Radio review. Submission does not guarantee approval, streaming, playlist placement, or promotion.</p>
+
+<input id="artistName" type="text" placeholder="Artist Name">
+<input id="songTitle" type="text" placeholder="Song Title">
+<input id="email" type="email" placeholder="Contact Email">
+<input id="musicLink" type="text" placeholder="Music Link: Google Drive, Dropbox, SoundCloud, YouTube, etc.">
+<input id="coverLink" type="text" placeholder="Cover Art Link optional">
+
+<textarea id="notes" rows="4" placeholder="Notes, genre, clean/explicit, social links, or anything Troy should know"></textarea>
+
+<label>
+<input id="permission" type="checkbox">
+I confirm that I own this music or have legal permission to submit it to WH2 Radio for review.
+</label>
+
+<label>
+<input id="agreement" type="checkbox">
+I understand that submitting music does not guarantee acceptance, airplay, promotion, playlist placement, or exposure.
+</label>
+
+<button onclick="submitMusic()">SUBMIT MUSIC</button>
+
+<div class="message" id="messageBox"></div>
+
+<p style="text-align:center;margin-top:25px;">
+<a href="index.html">Back to WH2 Radio</a> |
+<a href="submission.html">Read Submission Agreement</a>
+</p>
+
+</div>
+
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyDDpYf4GtbcIZ0OBu13qYqFqUt6H0s1C24",
+authDomain: "wh2-radio.firebaseapp.com",
+projectId: "wh2-radio",
+storageBucket: "wh2-radio.firebasestorage.app",
+messagingSenderId: "172232120211",
+appId: "1:172232120211:web:69a549acd85f286c5f3a66"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+function submitMusic(){
+const artistName = document.getElementById("artistName").value.trim();
+const songTitle = document.getElementById("songTitle").value.trim();
+const email = document.getElementById("email").value.trim();
+const musicLink = document.getElementById("musicLink").value.trim();
+const coverLink = document.getElementById("coverLink").value.trim();
+const notes = document.getElementById("notes").value.trim();
+const permission = document.getElementById("permission").checked;
+const agreement = document.getElementById("agreement").checked;
+const messageBox = document.getElementById("messageBox");
+
+if(!artistName || !songTitle || !email || !musicLink){
+messageBox.innerText = "Please complete artist name, song title, email, and music link.";
+return;
+}
+
+if(!permission || !agreement){
+messageBox.innerText = "Please check both agreement boxes before submitting.";
+return;
+}
+
+db.collection("submissions").add({
+artistName: artistName,
+songTitle: songTitle,
+email: email,
+musicLink: musicLink,
+coverLink: coverLink,
+notes: notes,
+permissionConfirmed: permission,
+agreementConfirmed: agreement,
+status: "Pending Review",
+submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+}).then(function(){
+messageBox.style.color = "#66ff99";
+messageBox.innerText = "Submission received. WH2 Radio will review your music.";
+document.getElementById("artistName").value = "";
+document.getElementById("songTitle").value = "";
+document.getElementById("email").value = "";
+document.getElementById("musicLink").value = "";
+document.getElementById("coverLink").value = "";
+document.getElementById("notes").value = "";
+document.getElementById("permission").checked = false;
+document.getElementById("agreement").checked = false;
+}).catch(function(error){
+messageBox.style.color = "#ff7777";
+messageBox.innerText = "Submission failed. Please try again.";
+});
+}
+</script>
+
+</body>
+</html>
