@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WH2 Owner Login</title>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <style>
 body{
   margin:0;
@@ -35,13 +38,9 @@ body{
   text-shadow:0 0 18px red;
 }
 
-.logo span{
-  color:red;
-}
+.logo span{color:red;}
 
-p{
-  color:#ccc;
-}
+p{color:#ccc;}
 
 input{
   width:90%;
@@ -67,6 +66,12 @@ button{
   cursor:pointer;
 }
 
+#error{
+  color:#ff7777;
+  margin-top:15px;
+  font-size:14px;
+}
+
 .small{
   margin-top:18px;
   font-size:13px;
@@ -82,13 +87,48 @@ button{
   <h2>Owner Login</h2>
   <p>Private access for WH2 Radio management.</p>
 
-  <input type="email" placeholder="Owner Email">
-  <input type="password" placeholder="Password">
+  <input id="email" type="email" placeholder="Owner Email">
+  <input id="password" type="password" placeholder="Password">
 
-  <button>LOGIN</button>
+  <button onclick="loginOwner()">LOGIN</button>
 
+  <div id="error"></div>
   <div class="small">WH2 Radio Admin Access</div>
 </div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDDpYf4GtbcIZO0Bu13qYqFqUt6H0s1C24",
+  authDomain: "wh2-radio.firebaseapp.com",
+  projectId: "wh2-radio",
+  storageBucket: "wh2-radio.firebasestorage.app",
+  messagingSenderId: "172232102011",
+  appId: "1:172232102011:web:69a549acd85f286c5f3a66"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+function loginOwner(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const errorBox = document.getElementById("error");
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const userEmail = userCredential.user.email;
+
+      if(userEmail === "wehumanradio@gmail.com"){
+        window.location.href = "admin.html";
+      } else {
+        firebase.auth().signOut();
+        errorBox.innerText = "Access denied. Owner account only.";
+      }
+    })
+    .catch((error) => {
+      errorBox.innerText = "Login failed. Check the email and password.";
+    });
+}
+</script>
 
 </body>
 </html>
