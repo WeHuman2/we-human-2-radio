@@ -6,29 +6,28 @@
 <title>WH2 Radio</title>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ff0000">
-<link rel="apple-touch-icon" href="WH2 Logo pics.png">
 
 <style>
+
 body{
 margin:0;
-min-height:100vh;
-background:radial-gradient(circle at top,#2b0000 0%,#000 45%,#000 100%);
+background:#000;
 color:white;
 font-family:Arial,sans-serif;
 text-align:center;
 }
 
 .header{
-padding:35px 20px 25px;
+padding:40px 20px;
+background:linear-gradient(to bottom,#2b0000,#000);
+border-bottom:1px solid red;
 }
 
 .logo{
-font-size:58px;
+font-size:64px;
 font-weight:900;
-letter-spacing:2px;
 color:white;
-text-shadow:0 0 18px red;
+text-shadow:0 0 15px red;
 }
 
 .logo span{
@@ -36,96 +35,104 @@ color:red;
 }
 
 .tagline{
-color:#ddd;
-font-size:18px;
-margin-top:8px;
-letter-spacing:1px;
+font-size:20px;
+margin-top:10px;
+color:#ccc;
+}
+
+.login-btn{
+display:inline-block;
+margin-top:25px;
+padding:12px 30px;
+background:red;
+color:white;
+text-decoration:none;
+border-radius:40px;
+font-weight:bold;
 }
 
 .player-card{
 width:90%;
-max-width:430px;
-margin:25px auto 35px;
+max-width:500px;
+margin:40px auto;
 padding:25px;
-background:rgba(20,20,20,.92);
-border:1px solid rgba(255,0,0,.7);
-border-radius:28px;
-box-shadow:0 0 35px rgba(255,0,0,.35);
+background:#111;
+border:1px solid red;
+border-radius:25px;
+box-shadow:0 0 25px rgba(255,0,0,.3);
 }
 
 .album-art{
 width:100%;
-max-width:310px;
-height:310px;
-border-radius:24px;
-object-fit:cover;
+max-width:300px;
+border-radius:20px;
 border:3px solid red;
-}
-
-.live-badge{
-display:inline-block;
-margin-top:22px;
-padding:7px 16px;
-border-radius:50px;
-background:red;
-font-size:13px;
-font-weight:bold;
 }
 
 .song-title{
 font-size:32px;
-font-weight:800;
-margin-top:18px;
+font-weight:bold;
+margin-top:20px;
 }
 
 .artist{
-font-size:17px;
+font-size:18px;
 color:#aaa;
-margin-top:5px;
+margin-bottom:20px;
 }
 
 audio{
 width:100%;
-margin-top:20px;
 }
 
 .footer{
-padding:25px;
+padding:30px;
 color:#777;
 font-size:13px;
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="header">
-<div class="logo">WH<span>2</span></div>
-<div class="tagline">AI Curated. Human Approved.</div>
+
+<div class="logo">
+WH<span>2</span>
+</div>
+
+<div class="tagline">
+AI Curated. Human Approved.
+</div>
+
+<a class="login-btn" href="login.html">
+OWNER LOGIN
+</a>
+
 </div>
 
 <div class="player-card">
-<img class="album-art" src="WH2 Logo pics.png">
 
-<div class="live-badge">NOW STREAMING</div>
+<img src="WH2 Logo pics.png" class="album-art">
 
-<div class="song-title">Midnight Vibes</div>
-<div class="artist">WH2 Artist</div>
+<div class="song-title">
+Midnight Vibes
+</div>
+
+<div class="artist">
+WH2 Artist
+</div>
 
 <audio controls>
 <source src="rockot-experimental-cinematic-hip-hop-315904.mp3" type="audio/mpeg">
 </audio>
+
 </div>
 
 <div class="footer">
 WH2 Radio © 2026
 </div>
-
-<script>
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("service-worker.js");
-}
-</script>
 
 </body>
 </html>
