@@ -3,64 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WH2 Radio</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ff0000">
-<link rel="apple-touch-icon" href="WH2 Logo pics.png">
+<title>WH2 Admin Dashboard</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <style>
-body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-align:center;}
-.header{padding:40px 20px;background:linear-gradient(to bottom,#2b0000,#000);border-bottom:1px solid red;}
-.logo{font-size:64px;font-weight:900;color:white;text-shadow:0 0 15px red;}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2b0000 0%,#000 45%,#000 100%);color:white;font-family:Arial,sans-serif;}
+.header{text-align:center;padding:25px 20px;border-bottom:1px solid red;}
+.logo{font-size:55px;font-weight:900;text-shadow:0 0 18px red;}
 .logo span{color:red;}
-.tagline{font-size:20px;margin-top:10px;color:#ccc;}
-.player-card{width:90%;max-width:500px;margin:40px auto;padding:25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.3);}
-.album-art{width:100%;max-width:300px;border-radius:20px;border:3px solid red;}
-.live-badge{display:inline-block;margin-top:22px;padding:7px 16px;border-radius:50px;background:red;font-size:13px;font-weight:bold;}
-.song-title{font-size:32px;font-weight:bold;margin-top:20px;}
-.artist{font-size:18px;color:#aaa;margin-bottom:20px;}
-audio{width:100%;}
-.offline-box{display:none;width:90%;max-width:500px;margin:40px auto;padding:35px 25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.25);}
-.offline-box h2{color:red;margin-top:0;}
-.footer{padding:30px;color:#777;font-size:13px;}
-.owner-link{font-size:12px;color:#333;text-decoration:none;}
+.subtitle{color:#aaa;margin-top:8px;}
+.logout{margin-top:15px;background:red;color:white;border:none;border-radius:50px;padding:12px 25px;font-weight:bold;}
+.notice{width:90%;max-width:1000px;margin:20px auto;padding:18px;border:1px solid red;border-radius:18px;background:#111;text-align:center;}
+.dashboard{width:92%;max-width:1000px;margin:30px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;}
+.card{background:#111;border:1px solid red;border-radius:22px;padding:22px;}
+.card h2{color:red;margin-top:0;}
+.card p{color:#bbb;font-size:14px;line-height:1.5;}
+input{width:92%;padding:12px;margin-top:10px;background:black;color:white;border:1px solid red;border-radius:12px;}
+button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;}
+.loading{text-align:center;padding:60px 20px;font-size:20px;color:#ccc;}
+.footer{text-align:center;color:#666;padding:25px;}
 </style>
 </head>
 
 <body>
 
+<div id="loading" class="loading">Checking owner access...</div>
+
+<div id="adminContent" style="display:none;">
+
 <div class="header">
 <div class="logo">WH<span>2</span></div>
-<div class="tagline">AI Curated. Human Approved.</div>
+<div class="subtitle">Welcome, Troy • Owner Dashboard</div>
+<button class="logout" onclick="logoutOwner()">LOGOUT</button>
 </div>
 
-<div class="player-card" id="playerCard">
+<div class="notice" id="statusMessage">
+Owner access confirmed. WH2 controls are connected.
+</div>
 
-<img src="WH2 Logo pics.png" class="album-art">
+<div class="dashboard">
 
-<div class="live-badge">NOW STREAMING</div>
+<div class="card">
+<h2>📻 Radio Controls</h2>
+<p>Turn WH2 Radio on or off for listeners.</p>
+<button onclick="setRadioStatus(true)">TURN RADIO ON</button>
+<button onclick="setRadioStatus(false)">TURN RADIO OFF</button>
+</div>
 
-<div class="song-title" id="songTitle">Loading...</div>
-<div class="artist" id="artistName">Loading...</div>
+<div class="card">
+<h2>🎵 Current Song</h2>
+<p>Update song title, artist name, and MP3 file name.</p>
+<input id="songInput" type="text" placeholder="Song Title">
+<input id="artistInput" type="text" placeholder="Artist Name">
+<input id="audioInput" type="text" placeholder="MP3 File Name">
+<button onclick="saveSongInfo()">SAVE SONG INFO</button>
+</div>
 
-<audio id="radioPlayer" controls>
-<source id="audioSource" src="" type="audio/mpeg">
-</audio>
+<div class="card">
+<h2>⚖ Legal Center</h2>
+<p>Open WH2 legal protection pages.</p>
+<button onclick="location.href='terms.html'">TERMS</button>
+<button onclick="location.href='privacy.html'">PRIVACY</button>
+<button onclick="location.href='copyright.html'">COPYRIGHT</button>
+<button onclick="location.href='submission.html'">SUBMISSION</button>
+</div>
+
+<div class="card">
+<h2>📋 Owner Instructions</h2>
+<p>Open the WH2 instruction guide.</p>
+<button onclick="location.href='instructions.html'">OPEN INSTRUCTIONS</button>
+</div>
+
+<div class="card">
+<h2>🎧 View Radio</h2>
+<p>Open the public player.</p>
+<button onclick="location.href='index.html'">VIEW PLAYER</button>
+</div>
 
 </div>
 
-<div class="offline-box" id="offlineBox">
-<h2>WH2 Radio is temporarily offline.</h2>
-<p>Please check back later for the next sound.</p>
-</div>
+<div class="footer">WH2 Admin Dashboard © 2026</div>
 
-<div class="footer">
-WH2 Radio © 2026<br><br>
-<a class="owner-link" href="login.html">Owner Access</a>
 </div>
 
 <script>
@@ -77,33 +103,53 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const radioRef = db.collection("settings").doc("radio");
 
-radioRef.onSnapshot(function(doc){
-if(doc.exists){
-const data = doc.data();
-
-document.getElementById("songTitle").innerText = data.currentSong || "WH2 Radio";
-document.getElementById("artistName").innerText = data.currentArtist || "WH2 Artist";
-
-const audioPlayer = document.getElementById("radioPlayer");
-const audioSource = document.getElementById("audioSource");
-
-if(data.audioSrc && audioSource.getAttribute("src") !== data.audioSrc){
-audioSource.src = data.audioSrc;
-audioPlayer.load();
-}
-
-if(data.isLive === true){
-document.getElementById("playerCard").style.display = "block";
-document.getElementById("offlineBox").style.display = "none";
+firebase.auth().onAuthStateChanged(function(user){
+if(user && user.email.toLowerCase() === "wehumanradio@gmail.com"){
+document.getElementById("loading").style.display = "none";
+document.getElementById("adminContent").style.display = "block";
+loadCurrentSettings();
 }else{
-document.getElementById("playerCard").style.display = "none";
-document.getElementById("offlineBox").style.display = "block";
-}
+window.location.href = "login.html";
 }
 });
 
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("service-worker.js");
+function loadCurrentSettings(){
+radioRef.get().then(function(doc){
+if(doc.exists){
+const data = doc.data();
+document.getElementById("songInput").value = data.currentSong || "";
+document.getElementById("artistInput").value = data.currentArtist || "";
+document.getElementById("audioInput").value = data.audioSrc || "";
+}
+});
+}
+
+function setRadioStatus(status){
+radioRef.update({isLive:status}).then(function(){
+document.getElementById("statusMessage").innerText =
+status ? "WH2 Radio is now LIVE." : "WH2 Radio is now OFFLINE.";
+});
+}
+
+function saveSongInfo(){
+const song = document.getElementById("songInput").value;
+const artist = document.getElementById("artistInput").value;
+const audio = document.getElementById("audioInput").value;
+
+radioRef.update({
+currentSong:song,
+currentArtist:artist,
+audioSrc:audio
+}).then(function(){
+document.getElementById("statusMessage").innerText =
+"Song information saved successfully.";
+});
+}
+
+function logoutOwner(){
+firebase.auth().signOut().then(function(){
+window.location.href = "login.html";
+});
 }
 </script>
 
