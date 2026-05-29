@@ -42,40 +42,6 @@ margin-top:8px;
 letter-spacing:1px;
 }
 
-.control-panel{
-width:90%;
-max-width:430px;
-margin:10px auto 0;
-padding:18px;
-background:rgba(15,15,15,.9);
-border:1px solid rgba(255,0,0,.5);
-border-radius:22px;
-}
-
-.control-title{
-font-size:14px;
-color:#aaa;
-letter-spacing:2px;
-margin-bottom:12px;
-}
-
-.toggle-btn{
-background:red;
-color:white;
-border:none;
-border-radius:50px;
-padding:14px 22px;
-font-size:15px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.status{
-margin-top:12px;
-font-size:14px;
-color:#ddd;
-}
-
 .player-card{
 width:90%;
 max-width:430px;
@@ -123,17 +89,6 @@ width:100%;
 margin-top:20px;
 }
 
-.off-message{
-display:none;
-width:90%;
-max-width:430px;
-margin:25px auto;
-padding:30px;
-background:rgba(20,20,20,.92);
-border:1px solid rgba(255,0,0,.7);
-border-radius:28px;
-}
-
 .footer{
 padding:25px;
 color:#777;
@@ -149,31 +104,17 @@ font-size:13px;
 <div class="tagline">AI Curated. Human Approved.</div>
 </div>
 
-<div class="control-panel">
-<div class="control-title">TROY CONTROL PANEL</div>
-<button class="toggle-btn" onclick="togglePlayer()">TURN RADIO OFF</button>
-<div class="status" id="statusText">Radio is live.</div>
-</div>
-
-<div class="player-card" id="playerCard">
-
+<div class="player-card">
 <img class="album-art" src="WH2 Logo pics.png">
 
 <div class="live-badge">NOW STREAMING</div>
 
 <div class="song-title">Midnight Vibes</div>
-
 <div class="artist">WH2 Artist</div>
 
-<audio controls id="audioPlayer">
+<audio controls>
 <source src="rockot-experimental-cinematic-hip-hop-315904.mp3" type="audio/mpeg">
 </audio>
-
-</div>
-
-<div class="off-message" id="offMessage">
-<h2>WH2 Radio is currently offline.</h2>
-<p>Check back soon for the next sound.</p>
 </div>
 
 <div class="footer">
@@ -181,43 +122,6 @@ WH2 Radio © 2026
 </div>
 
 <script>
-function updatePlayerView() {
-const playerCard = document.getElementById("playerCard");
-const offMessage = document.getElementById("offMessage");
-const statusText = document.getElementById("statusText");
-const button = document.querySelector(".toggle-btn");
-const audio = document.getElementById("audioPlayer");
-
-const status = localStorage.getItem("wh2RadioOn") || "true";
-
-if(status === "true"){
-playerCard.style.display = "block";
-offMessage.style.display = "none";
-statusText.innerText = "Radio is live.";
-button.innerText = "TURN RADIO OFF";
-}else{
-playerCard.style.display = "none";
-offMessage.style.display = "block";
-statusText.innerText = "Radio is currently off.";
-button.innerText = "TURN RADIO ON";
-audio.pause();
-}
-}
-
-function togglePlayer(){
-const current = localStorage.getItem("wh2RadioOn") || "true";
-
-if(current === "true"){
-localStorage.setItem("wh2RadioOn","false");
-}else{
-localStorage.setItem("wh2RadioOn","true");
-}
-
-updatePlayerView();
-}
-
-updatePlayerView();
-
 if("serviceWorker" in navigator){
 navigator.serviceWorker.register("service-worker.js");
 }
