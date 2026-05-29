@@ -7,129 +7,30 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <style>
-body{
-margin:0;
-min-height:100vh;
-background:radial-gradient(circle at top,#2b0000 0%,#000 45%,#000 100%);
-color:white;
-font-family:Arial,sans-serif;
-}
-
-.header{
-padding:25px 20px;
-text-align:center;
-border-bottom:1px solid rgba(255,0,0,.5);
-}
-
-.logo{
-font-size:48px;
-font-weight:900;
-text-shadow:0 0 18px red;
-}
-
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2b0000 0%,#000 45%,#000 100%);color:white;font-family:Arial,sans-serif;}
+.header{padding:25px 20px;text-align:center;border-bottom:1px solid rgba(255,0,0,.5);}
+.logo{font-size:48px;font-weight:900;text-shadow:0 0 18px red;}
 .logo span{color:red;}
-
-.subtitle{
-color:#aaa;
-margin-top:6px;
-}
-
-.logout-btn{
-margin-top:15px;
-padding:12px 24px;
-border:none;
-border-radius:50px;
-background:red;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-.notice{
-width:92%;
-max-width:1000px;
-margin:20px auto;
-padding:18px;
-background:rgba(255,0,0,.12);
-border:1px solid rgba(255,0,0,.5);
-border-radius:18px;
-color:#ddd;
-text-align:center;
-}
-
-.dashboard{
-width:92%;
-max-width:1000px;
-margin:30px auto;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:18px;
-}
-
-.card{
-background:rgba(20,20,20,.95);
-border:1px solid rgba(255,0,0,.65);
-border-radius:22px;
-padding:22px;
-box-shadow:0 0 25px rgba(255,0,0,.18);
-}
-
-.card h2{
-margin-top:0;
-color:red;
-font-size:22px;
-}
-
-.card p{
-color:#bbb;
-line-height:1.5;
-font-size:14px;
-}
-
-button{
-width:100%;
-padding:13px;
-margin-top:10px;
-border:none;
-border-radius:50px;
-background:red;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-input,textarea{
-width:92%;
-padding:12px;
-margin-top:10px;
-border-radius:12px;
-border:1px solid red;
-background:#000;
-color:white;
-}
-
-.footer{
-text-align:center;
-color:#666;
-padding:25px;
-}
-
-.loading{
-text-align:center;
-padding:60px 20px;
-font-size:20px;
-color:#ccc;
-}
+.subtitle{color:#aaa;margin-top:6px;}
+.logout-btn{margin-top:15px;padding:12px 24px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;cursor:pointer;}
+.notice{width:92%;max-width:1000px;margin:20px auto;padding:18px;background:rgba(255,0,0,.12);border:1px solid rgba(255,0,0,.5);border-radius:18px;color:#ddd;text-align:center;}
+.dashboard{width:92%;max-width:1000px;margin:30px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;}
+.card{background:rgba(20,20,20,.95);border:1px solid rgba(255,0,0,.65);border-radius:22px;padding:22px;box-shadow:0 0 25px rgba(255,0,0,.18);}
+.card h2{margin-top:0;color:red;font-size:22px;}
+.card p{color:#bbb;line-height:1.5;font-size:14px;}
+button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;cursor:pointer;}
+input{width:92%;padding:12px;margin-top:10px;border-radius:12px;border:1px solid red;background:#000;color:white;}
+.footer{text-align:center;color:#666;padding:25px;}
+.loading{text-align:center;padding:60px 20px;font-size:20px;color:#ccc;}
 </style>
 </head>
 
 <body>
 
-<div id="loading" class="loading">
-Checking owner access...
-</div>
+<div id="loading" class="loading">Checking owner access...</div>
 
 <div id="adminContent" style="display:none;">
 
@@ -139,8 +40,8 @@ Checking owner access...
 <button class="logout-btn" onclick="logoutOwner()">LOGOUT</button>
 </div>
 
-<div class="notice">
-Owner access confirmed. WH2 Radio management system is protected.
+<div class="notice" id="statusMessage">
+Owner access confirmed. WH2 controls are connected.
 </div>
 
 <div class="dashboard">
@@ -148,64 +49,48 @@ Owner access confirmed. WH2 Radio management system is protected.
 <div class="card">
 <h2>📻 Radio Controls</h2>
 <p>Turn WH2 Radio on or off for listeners.</p>
-<button>TURN RADIO ON</button>
-<button>TURN RADIO OFF</button>
+<button onclick="setRadioStatus(true)">TURN RADIO ON</button>
+<button onclick="setRadioStatus(false)">TURN RADIO OFF</button>
 </div>
 
 <div class="card">
-<h2>🎵 Music Management</h2>
-<p>Add songs, organize tracks, and manage what plays on WH2.</p>
-<input type="text" placeholder="Song Title">
-<input type="text" placeholder="Artist Name">
-<input type="file" accept="audio/*">
-<button>SAVE SONG</button>
+<h2>🎵 Current Song</h2>
+<p>Update the active song title and artist name.</p>
+<input id="songInput" type="text" placeholder="Song Title">
+<input id="artistInput" type="text" placeholder="Artist Name">
+<button onclick="saveSongInfo()">SAVE SONG INFO</button>
 </div>
 
 <div class="card">
 <h2>🖼 Cover Art</h2>
-<p>Upload or change cover artwork for the current track or station.</p>
-<input type="file" accept="image/*">
-<button>UPDATE COVER</button>
+<p>Coming next: update cover artwork for the station.</p>
+<button>COMING SOON</button>
 </div>
 
 <div class="card">
 <h2>📋 Playlist</h2>
-<p>Manage the current station playlist and track order.</p>
-<button>VIEW PLAYLIST</button>
-<button>REORDER SONGS</button>
-</div>
-
-<div class="card">
-<h2>👥 Users</h2>
-<p>Future area for managing DJs, staff, artists, or moderators.</p>
-<button>MANAGE USERS</button>
+<p>Coming later: manage multiple songs and track order.</p>
+<button>COMING SOON</button>
 </div>
 
 <div class="card">
 <h2>⚖ Legal Center</h2>
-<p>Terms, privacy policy, copyright rules, and music permission notices.</p>
-<button>OPEN LEGAL CENTER</button>
-</div>
-
-<div class="card">
-<h2>📊 Stats</h2>
-<p>Future area for plays, uploads, listener activity, and growth tracking.</p>
-<button>VIEW STATS</button>
+<p>Open WH2 legal protection pages.</p>
+<button onclick="location.href='terms.html'">TERMS</button>
+<button onclick="location.href='privacy.html'">PRIVACY</button>
+<button onclick="location.href='copyright.html'">COPYRIGHT</button>
+<button onclick="location.href='submission.html'">SUBMISSION AGREEMENT</button>
 </div>
 
 <div class="card">
 <h2>⚙ Settings</h2>
-<p>Manage brand settings, station name, tagline, and app details.</p>
-<input type="text" placeholder="Station Name">
-<input type="text" placeholder="Tagline">
-<button>SAVE SETTINGS</button>
+<p>Current build: Troy-only owner access.</p>
+<button onclick="location.href='index.html'">VIEW RADIO PLAYER</button>
 </div>
 
 </div>
 
-<div class="footer">
-WH2 Admin Dashboard © 2026
-</div>
+<div class="footer">WH2 Admin Dashboard © 2026</div>
 
 </div>
 
@@ -220,6 +105,8 @@ appId: "1:172232120211:web:69a549acd85f286c5f3a66"
 };
 
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const radioRef = db.collection("settings").doc("radio");
 
 firebase.auth().onAuthStateChanged(function(user){
 const loading = document.getElementById("loading");
@@ -228,10 +115,43 @@ const adminContent = document.getElementById("adminContent");
 if(user && user.email.toLowerCase() === "wehumanradio@gmail.com"){
 loading.style.display = "none";
 adminContent.style.display = "block";
+loadCurrentSettings();
 }else{
 window.location.href = "login.html";
 }
 });
+
+function loadCurrentSettings(){
+radioRef.get().then(function(doc){
+if(doc.exists){
+const data = doc.data();
+document.getElementById("songInput").value = data.currentSong || "";
+document.getElementById("artistInput").value = data.currentArtist || "";
+}
+});
+}
+
+function setRadioStatus(status){
+radioRef.update({
+isLive: status
+}).then(function(){
+document.getElementById("statusMessage").innerText =
+status ? "WH2 Radio is now LIVE." : "WH2 Radio is now OFFLINE.";
+});
+}
+
+function saveSongInfo(){
+const song = document.getElementById("songInput").value;
+const artist = document.getElementById("artistInput").value;
+
+radioRef.update({
+currentSong: song,
+currentArtist: artist
+}).then(function(){
+document.getElementById("statusMessage").innerText =
+"Song information saved successfully.";
+});
+}
 
 function logoutOwner(){
 firebase.auth().signOut().then(function(){
