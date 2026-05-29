@@ -13,70 +13,68 @@ body{
 margin:0;
 min-height:100vh;
 background:radial-gradient(circle at top,#2b0000 0%,#000 45%,#000 100%);
-color:white;
 font-family:Arial,sans-serif;
 display:flex;
-align-items:center;
 justify-content:center;
-text-align:center;
+align-items:center;
+color:white;
 }
 
 .login-box{
 width:90%;
-max-width:390px;
+max-width:400px;
 padding:30px;
-background:rgba(20,20,20,.95);
+background:#111;
 border:1px solid red;
 border-radius:25px;
-box-shadow:0 0 35px rgba(255,0,0,.35);
+text-align:center;
+box-shadow:0 0 30px rgba(255,0,0,.4);
 }
 
 .logo{
-font-size:52px;
+font-size:60px;
 font-weight:900;
-color:white;
-text-shadow:0 0 18px red;
+margin-bottom:15px;
 }
 
-.logo span{color:red;}
-
-p{color:#ccc;}
+.logo span{
+color:red;
+}
 
 input{
 width:90%;
-padding:14px;
+padding:15px;
 margin:10px 0;
-border-radius:12px;
+background:black;
 border:1px solid red;
-background:#000;
+border-radius:10px;
 color:white;
-font-size:15px;
+font-size:16px;
 }
 
 button{
 width:95%;
-padding:14px;
+padding:15px;
 margin-top:15px;
 border:none;
 border-radius:50px;
 background:red;
 color:white;
-font-size:16px;
+font-size:18px;
 font-weight:bold;
 cursor:pointer;
 }
 
 #error{
-color:#ff7777;
 margin-top:15px;
+color:#ff6b6b;
 font-size:14px;
-line-height:1.4;
 }
 
-.small{
-margin-top:18px;
-font-size:13px;
-color:#777;
+.footer{
+margin-top:20px;
+font-size:12px;
+color:#888;
 }
 </style>
 </head>
@@ -84,22 +82,31 @@ color:#777;
 <body>
 
 <div class="login-box">
+
 <div class="logo">WH<span>2</span></div>
+
 <h2>Owner Login</h2>
+
 <p>Private access for WH2 Radio management.</p>
 
 <input id="email" type="email" placeholder="Owner Email">
+
 <input id="password" type="password" placeholder="Password">
 
 <button onclick="loginOwner()">LOGIN</button>
 
 <div id="error"></div>
-<div class="small">WH2 Radio Admin Access</div>
+
+<div class="footer">
+WH2 Radio Admin Access
+</div>
+
 </div>
 
 <script>
+
 const firebaseConfig = {
-apiKey: "AIzaSyDDpYf4GtbcIZO0Bu13qYqFqUt6H0s1C24",
+apiKey: "AIzaSyDDpYf4GtbcIZ00Bu13qYqFqUt6H0s1C24",
 authDomain: "wh2-radio.firebaseapp.com",
 projectId: "wh2-radio",
 storageBucket: "wh2-radio.firebasestorage.app",
@@ -110,27 +117,50 @@ appId: "1:172232102011:web:69a549acd85f286c5f3a66"
 firebase.initializeApp(firebaseConfig);
 
 function loginOwner(){
-const email = document.getElementById("email").value.trim().toLowerCase();
-const password = document.getElementById("password").value;
-const errorBox = document.getElementById("error");
+
+const email =
+document.getElementById("email").value.trim().toLowerCase();
+
+const password =
+document.getElementById("password").value;
+
+const errorBox =
+document.getElementById("error");
 
 errorBox.innerText = "Checking login...";
 
-firebase.auth().signInWithEmailAndPassword(email, password)
+firebase.auth()
+.signInWithEmailAndPassword(email,password)
+
 .then(function(userCredential){
-const userEmail = userCredential.user.email.toLowerCase();
+
+const userEmail =
+userCredential.user.email.toLowerCase();
 
 if(userEmail === "wehumanradio@gmail.com"){
+
 window.location.href = "admin.html";
+
 }else{
+
 firebase.auth().signOut();
-errorBox.innerText = "Access denied. Owner account only.";
+
+errorBox.innerText =
+"Access denied. Owner account only.";
+
 }
+
 })
+
 .catch(function(error){
-errorBox.innerText = error.code + " - " + error.message;
+
+errorBox.innerText =
+error.code + " | " + error.message;
+
 });
+
 }
+
 </script>
 
 </body>
