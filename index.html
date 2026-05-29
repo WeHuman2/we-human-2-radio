@@ -40,7 +40,7 @@ audio{width:100%;}
 </div>
 
 <div class="player-card" id="playerCard">
-<img src="WH2 Logo pics.png" class="album-art">
+<img id="coverArt" src="wh2-icon.png" class="album-art">
 
 <div class="live-badge">NOW STREAMING</div>
 
@@ -87,6 +87,13 @@ const data = doc.data();
 
 document.getElementById("songTitle").innerText = data.currentSong || "WH2 Radio";
 document.getElementById("artistName").innerText = data.currentArtist || "WH2 Artist";
+
+const coverArt = document.getElementById("coverArt");
+if(data.coverSrc){
+coverArt.src = data.coverSrc;
+}else{
+coverArt.src = "wh2-icon.png";
+}
 
 const audioPlayer = document.getElementById("radioPlayer");
 const audioSource = document.getElementById("audioSource");
