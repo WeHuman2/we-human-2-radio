@@ -66,6 +66,12 @@ Owner access confirmed. WH2 controls are connected.
 </div>
 
 <div class="card">
+<h2>📥 Review Submissions</h2>
+<p>View artist music submissions, open their music links, and approve or reject submissions.</p>
+<button onclick="location.href='submissions.html'">OPEN SUBMISSIONS</button>
+</div>
+
+<div class="card">
 <h2>📤 Share WH2 Radio</h2>
 <p>Send the public radio player link by text, email, Messenger, Facebook, or any app on the phone.</p>
 <input id="shareLink" type="text" value="https://wehuman2.github.io/we-human-2-radio/" readonly>
@@ -163,8 +169,7 @@ document.getElementById("statusMessage").innerText =
 function copyPlayerLink(){
 const link = document.getElementById("shareLink").value;
 navigator.clipboard.writeText(link).then(function(){
-document.getElementById("statusMessage").innerText =
-"Player link copied.";
+document.getElementById("statusMessage").innerText = "Player link copied.";
 });
 }
 
