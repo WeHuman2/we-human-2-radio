@@ -18,6 +18,7 @@ body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-alig
 .logo{font-size:64px;font-weight:900;color:white;text-shadow:0 0 15px red;}
 .logo span{color:red;}
 .tagline{font-size:20px;margin-top:10px;color:#ccc;}
+.submit-btn{display:inline-block;margin-top:20px;padding:13px 28px;background:red;color:white;text-decoration:none;border-radius:50px;font-weight:bold;}
 .player-card{width:90%;max-width:500px;margin:40px auto;padding:25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.3);}
 .album-art{width:100%;max-width:300px;border-radius:20px;border:3px solid red;}
 .live-badge{display:inline-block;margin-top:22px;padding:7px 16px;border-radius:50px;background:red;font-size:13px;font-weight:bold;}
@@ -37,6 +38,7 @@ audio{width:100%;}
 <div class="header">
 <div class="logo">WH<span>2</span></div>
 <div class="tagline">AI Curated. Human Approved.</div>
+<a class="submit-btn" href="submit.html">SUBMIT MUSIC</a>
 </div>
 
 <div class="player-card" id="playerCard">
@@ -89,11 +91,7 @@ document.getElementById("songTitle").innerText = data.currentSong || "WH2 Radio"
 document.getElementById("artistName").innerText = data.currentArtist || "WH2 Artist";
 
 const coverArt = document.getElementById("coverArt");
-if(data.coverSrc){
-coverArt.src = data.coverSrc;
-}else{
-coverArt.src = "wh2-icon.png";
-}
+coverArt.src = data.coverSrc || "wh2-icon.png";
 
 const audioPlayer = document.getElementById("radioPlayer");
 const audioSource = document.getElementById("audioSource");
