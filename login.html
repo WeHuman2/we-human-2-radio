@@ -97,70 +97,44 @@ color:#888;
 
 <div id="error"></div>
 
-<div class="footer">
-WH2 Radio Admin Access
-</div>
+<div class="footer">WH2 Radio Admin Access</div>
 
 </div>
 
 <script>
-
 const firebaseConfig = {
-apiKey: "AIzaSyDDpYf4GtbcIZ00Bu13qYqFqUt6H0s1C24",
+apiKey: "AIzaSyDDpYf4GtbcIZ0OBu13qYqFqUt6H0s1C24",
 authDomain: "wh2-radio.firebaseapp.com",
 projectId: "wh2-radio",
 storageBucket: "wh2-radio.firebasestorage.app",
-messagingSenderId: "172232102011",
-appId: "1:172232102011:web:69a549acd85f286c5f3a66"
+messagingSenderId: "172232120211",
+appId: "1:172232120211:web:69a549acd85f286c5f3a66"
 };
 
 firebase.initializeApp(firebaseConfig);
 
 function loginOwner(){
-
-const email =
-document.getElementById("email").value.trim().toLowerCase();
-
-const password =
-document.getElementById("password").value;
-
-const errorBox =
-document.getElementById("error");
+const email = document.getElementById("email").value.trim().toLowerCase();
+const password = document.getElementById("password").value;
+const errorBox = document.getElementById("error");
 
 errorBox.innerText = "Checking login...";
 
-firebase.auth()
-.signInWithEmailAndPassword(email,password)
-
+firebase.auth().signInWithEmailAndPassword(email,password)
 .then(function(userCredential){
-
-const userEmail =
-userCredential.user.email.toLowerCase();
+const userEmail = userCredential.user.email.toLowerCase();
 
 if(userEmail === "wehumanradio@gmail.com"){
-
 window.location.href = "admin.html";
-
 }else{
-
 firebase.auth().signOut();
-
-errorBox.innerText =
-"Access denied. Owner account only.";
-
+errorBox.innerText = "Access denied. Owner account only.";
 }
-
 })
-
 .catch(function(error){
-
-errorBox.innerText =
-error.code + " | " + error.message;
-
+errorBox.innerText = error.code + " | " + error.message;
 });
-
 }
-
 </script>
 
 </body>
