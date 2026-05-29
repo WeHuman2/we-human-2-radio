@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WH2 Radio</title>
 
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff0000">
+<link rel="apple-touch-icon" href="WH2 Logo pics.png">
+
 <style>
 body{
   margin:0;
@@ -180,6 +184,12 @@ audio{
 <div class="footer">
   WH2 Radio © 2026 • Built for the next sound
 </div>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
 
 </body>
 </html>
