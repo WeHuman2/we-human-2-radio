@@ -25,6 +25,7 @@ button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;ba
 input{width:92%;padding:12px;margin-top:10px;border-radius:12px;border:1px solid red;background:#000;color:white;}
 .footer{text-align:center;color:#666;padding:25px;}
 .loading{text-align:center;padding:60px 20px;font-size:20px;color:#ccc;}
+.small-note{font-size:12px;color:#888;margin-top:10px;line-height:1.4;}
 </style>
 </head>
 
@@ -55,22 +56,24 @@ Owner access confirmed. WH2 controls are connected.
 
 <div class="card">
 <h2>🎵 Current Song</h2>
-<p>Update the active song title and artist name.</p>
+<p>Update the active song title, artist name, and MP3 file name.</p>
 <input id="songInput" type="text" placeholder="Song Title">
 <input id="artistInput" type="text" placeholder="Artist Name">
+<input id="audioInput" type="text" placeholder="MP3 File Name">
+<div class="small-note">Example: rockot-experimental-cinematic-hip-hop-315904.mp3</div>
 <button onclick="saveSongInfo()">SAVE SONG INFO</button>
 </div>
 
 <div class="card">
 <h2>🖼 Cover Art</h2>
-<p>Coming next: update cover artwork for the station.</p>
+<p>Coming next: update cover artwork by image file name.</p>
 <button>COMING SOON</button>
 </div>
 
 <div class="card">
-<h2>📋 Playlist</h2>
-<p>Coming later: manage multiple songs and track order.</p>
-<button>COMING SOON</button>
+<h2>📋 Upload Instructions</h2>
+<p>To add a new song today: upload the MP3 to GitHub, copy the exact file name, paste it in MP3 File Name, then save.</p>
+<button onclick="location.href='index.html'">VIEW RADIO PLAYER</button>
 </div>
 
 <div class="card">
@@ -83,9 +86,9 @@ Owner access confirmed. WH2 controls are connected.
 </div>
 
 <div class="card">
-<h2>⚙ Settings</h2>
+<h2>⚙ Owner Settings</h2>
 <p>Current build: Troy-only owner access.</p>
-<button onclick="location.href='index.html'">VIEW RADIO PLAYER</button>
+<button onclick="location.href='login.html'">OWNER LOGIN PAGE</button>
 </div>
 
 </div>
@@ -127,14 +130,13 @@ if(doc.exists){
 const data = doc.data();
 document.getElementById("songInput").value = data.currentSong || "";
 document.getElementById("artistInput").value = data.currentArtist || "";
+document.getElementById("audioInput").value = data.audioSrc || "";
 }
 });
 }
 
 function setRadioStatus(status){
-radioRef.update({
-isLive: status
-}).then(function(){
+radioRef.update({isLive: status}).then(function(){
 document.getElementById("statusMessage").innerText =
 status ? "WH2 Radio is now LIVE." : "WH2 Radio is now OFFLINE.";
 });
@@ -143,13 +145,15 @@ status ? "WH2 Radio is now LIVE." : "WH2 Radio is now OFFLINE.";
 function saveSongInfo(){
 const song = document.getElementById("songInput").value;
 const artist = document.getElementById("artistInput").value;
+const audio = document.getElementById("audioInput").value;
 
 radioRef.update({
 currentSong: song,
-currentArtist: artist
+currentArtist: artist,
+audioSrc: audio
 }).then(function(){
 document.getElementById("statusMessage").innerText =
-"Song information saved successfully.";
+"Song information and audio file saved successfully.";
 });
 }
 
