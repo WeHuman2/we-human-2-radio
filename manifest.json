@@ -1,0 +1,17 @@
+{
+  "name": "WH2 Radio",
+  "short_name": "WH2",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff0000",
+  "orientation": "portrait",
+  "description": "AI Curated. Human Approved.",
+  "icons": [
+    {
+      "src": "WH2 Logo pics.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
