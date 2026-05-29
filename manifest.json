@@ -1,7 +1,8 @@
 {
   "name": "WH2 Radio",
   "short_name": "WH2",
-  "start_url": "./",
+  "start_url": "/we-human-2-radio/",
+  "scope": "/we-human-2-radio/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#ff0000",
@@ -9,9 +10,10 @@
   "description": "AI Curated. Human Approved.",
   "icons": [
     {
-      "src": "WH2 Logo pics.png",
+      "src": "wh2-icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
