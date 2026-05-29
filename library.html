@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WH2 Approved Songs Library</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
+.header{text-align:center;padding:30px 20px;border-bottom:1px solid red;background:linear-gradient(to bottom,#2b0000,#000);}
+.logo{font-size:55px;font-weight:900;text-shadow:0 0 18px red;}
+.logo span{color:red;}
+.container{width:92%;max-width:1000px;margin:30px auto;}
+.card{background:#111;border:1px solid red;border-radius:20px;padding:20px;margin-bottom:18px;}
+h1,h2{color:red;}
+p{color:#ccc;line-height:1.5;}
+input{width:92%;padding:12px;margin-top:10px;background:#000;color:white;border:1px solid red;border-radius:12px;}
+button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;}
+a{color:red;}
+.loading{text-align:center;padding:50px;color:#ccc;}
+.status{color:#66ff99;font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<div id="loading" class="loading">Checking owner access...</div>
+
+<div id="pageContent" style="display:none;">
+
+<div class="header">
+<div class="logo">WH<span>2</span></div>
+<h1>Approved Songs Library</h1>
+<p>Owner-only music library for WH2 Radio.</p>
+</div>
+
+<div class="container">
+
+<button onclick="location.href='admin.html'">BACK TO DASHBOARD</button>
+
+<div class="card">
+<h2>Add Approved Song</h2>
+<input id="songTitle" type="text" placeholder="Song Title">
+<input id="artistName" type="text" placeholder="Artist Name">
+<input id="audioSrc" type="text" placeholder="MP3 File Name or Music Link">
+<input id="coverSrc" type="text" placeholder="Cover Image File Name or Cover Link">
+<button onclick="addSong()">ADD TO LIBRARY</button>
+<p id="messageBox"></p>
+</div>
+
+<div class="card">
+<h2>Approved Songs</h2>
+<div id="songsList">Loading songs...</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyDDpYf4GtbcIZ0OBu13qYqFqUt6H0s1C24",
+authDomain: "wh2-radio.firebaseapp.com",
+projectId: "wh2-radio",
+storageBucket: "wh2-radio.firebasestorage.app",
+messagingSenderId: "172232120211",
+appId: "1:172232120211:web:69a549acd85f286c5f3a66"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+firebase.auth().onAuthStateChanged(function(user){
+if(user && user.email.toLowerCase() === "wehumanradio@gmail.com"){
+document.getElementById("loading").style.display = "none";
+document.getElementById("pageContent").style.display = "block";
+loadSongs();
+}else{
+window.location.href = "login.html";
+}
+});
+
+function addSong(){
+const songTitle = document.getElementById("songTitle").value.trim();
+const artistName = document.getElementById("artistName").value.trim();
+const audioSrc = document.getElementById("audioSrc").value.trim();
+const coverSrc = document.getElementById("coverSrc").value.trim();
+const messageBox = document.getElementById("messageBox");
+
+if(!songTitle || !artistName || !audioSrc){
+messageBox.style.color = "#ff7777";
+messageBox.innerText = "Please enter song title, artist name, and MP3 file/link.";
+return;
+}
+
+db.collection("approvedSongs").add({
+songTitle:songTitle,
+artistName:artistName,
+audioSrc:audioSrc,
+coverSrc:coverSrc,
+status:"Approved",
+addedAt:firebase.firestore.FieldValue.serverTimestamp()
+}).then(function(){
+messageBox.style.color = "#66ff99";
+messageBox.innerText = "Song added to approved library.";
+document.getElementById("songTitle").value = "";
+document.getElementById("artistName").value = "";
+document.getElementById("audioSrc").value = "";
+document.getElementById("coverSrc").value = "";
+loadSongs();
+});
+}
+
+function loadSongs(){
+const songsList = document.getElementById("songsList");
+songsList.innerHTML = "Loading songs...";
+
+db.collection("approvedSongs").orderBy("addedAt","desc").get()
+.then(function(snapshot){
+if(snapshot.empty){
+songsList.innerHTML = "<p>No approved songs yet.</p>";
+return;
+}
+
+songsList.innerHTML = "";
+
+snapshot.forEach(function(doc){
+const data = doc.data();
+
+const item = document.createElement("div");
+item.style.borderTop = "1px solid rgba(255,0,0,.4)";
+item.style.padding = "15px 0";
+
+item.innerHTML = `
+<h2>${data.songTitle || "Untitled"}</h2>
+<p><strong>Artist:</strong> ${data.artistName || ""}</p>
+<p><strong>Audio:</strong> ${data.audioSrc || ""}</p>
+<p><strong>Cover:</strong> ${data.coverSrc || "None"}</p>
+<p><strong>Status:</strong> <span class="status">${data.status || "Approved"}</span></p>
+<button onclick="makeCurrent('${doc.id}')">MAKE CURRENT SONG</button>
+<button onclick="deleteSong('${doc.id}')">DELETE FROM LIBRARY</button>
+`;
+
+songsList.appendChild(item);
+});
+});
+}
+
+function makeCurrent(id){
+db.collection("approvedSongs").doc(id).get()
+.then(function(doc){
+if(doc.exists){
+const data = doc.data();
+
+db.collection("settings").doc("radio").update({
+currentSong:data.songTitle || "",
+currentArtist:data.artistName || "",
+audioSrc:data.audioSrc || "",
+coverSrc:data.coverSrc || ""
+}).then(function(){
+alert("This song is now the current WH2 Radio track.");
+});
+}
+});
+}
+
+function deleteSong(id){
+if(confirm("Delete this song from the approved library?")){
+db.collection("approvedSongs").doc(id).delete()
+.then(function(){
+loadSongs();
+});
+}
+}
+</script>
+
+</body>
+</html>
