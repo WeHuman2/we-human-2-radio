@@ -3,82 +3,145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WH2 Music Submission Agreement</title>
+<title>WH2 Review Submissions</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <style>
-body{
-margin:0;
-background:#000;
-color:white;
-font-family:Arial,sans-serif;
-line-height:1.6;
-}
-
-.container{
-width:90%;
-max-width:900px;
-margin:40px auto;
-background:#111;
-border:1px solid red;
-border-radius:20px;
-padding:30px;
-}
-
-h1,h2{
-color:red;
-}
-
-a{
-color:red;
-}
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
+.header{text-align:center;padding:30px 20px;border-bottom:1px solid red;background:linear-gradient(to bottom,#2b0000,#000);}
+.logo{font-size:55px;font-weight:900;text-shadow:0 0 18px red;}
+.logo span{color:red;}
+.container{width:92%;max-width:1000px;margin:30px auto;}
+.card{background:#111;border:1px solid red;border-radius:20px;padding:20px;margin-bottom:18px;}
+h1,h2{color:red;}
+p{color:#ccc;line-height:1.5;}
+button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;}
+a{color:red;}
+.loading{text-align:center;padding:50px;color:#ccc;}
+.status{color:#66ff99;font-weight:bold;}
+.reject{background:#555;}
 </style>
 </head>
 
 <body>
 
+<div id="loading" class="loading">Checking owner access...</div>
+
+<div id="pageContent" style="display:none;">
+
+<div class="header">
+<div class="logo">WH<span>2</span></div>
+<h1>Review Music Submissions</h1>
+<p>Owner-only submission review center.</p>
+</div>
+
 <div class="container">
 
-<h1>WH2 Music Submission Agreement</h1>
+<button onclick="location.href='admin.html'">BACK TO DASHBOARD</button>
 
-<p><strong>Effective Date:</strong> 2026</p>
-
-<p>By submitting music, audio, artwork, promotional materials, or related content to WH2 Radio, you agree to the following terms.</p>
-
-<h2>Ownership</h2>
-
-<p>You confirm that you own the content being submitted or have full legal authority and permission to submit it.</p>
-
-<h2>Permission to Review</h2>
-
-<p>You grant WH2 Radio permission to review, evaluate, store, organize, and consider your content for streaming, promotion, playlist placement, interviews, features, or other platform activities.</p>
-
-<h2>No Guarantee of Placement</h2>
-
-<p>Submission of content does not guarantee acceptance, streaming, promotion, playlist placement, interviews, advertising, sponsorship opportunities, or exposure.</p>
-
-<h2>Copyright Responsibility</h2>
-
-<p>You accept full responsibility for ensuring your content does not violate copyrights, trademarks, licensing agreements, contracts, or other intellectual property rights.</p>
-
-<h2>Content Removal</h2>
-
-<p>WH2 Radio may remove, reject, disable, pause, or discontinue use of submitted content at any time.</p>
-
-<h2>Indemnification</h2>
-
-<p>You agree to hold WH2 Radio, its owners, operators, staff, partners, and affiliates harmless from claims, damages, disputes, liabilities, legal actions, or expenses arising from submitted content.</p>
-
-<h2>Submission Contact</h2>
-
-<p>Email: wehumanradio@gmail.com</p>
-
-<h2>Agreement</h2>
-
-<p>By submitting content to WH2 Radio, you acknowledge that you have read, understood, and agreed to this Music Submission Agreement.</p>
-
-<p><a href="index.html">Back to WH2 Radio</a></p>
+<div id="submissionsList">Loading submissions...</div>
 
 </div>
+
+</div>
+
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyDDpYf4GtbcIZ0OBu13qYqFqUt6H0s1C24",
+authDomain: "wh2-radio.firebaseapp.com",
+projectId: "wh2-radio",
+storageBucket: "wh2-radio.firebasestorage.app",
+messagingSenderId: "172232120211",
+appId: "1:172232120211:web:69a549acd85f286c5f3a66"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+firebase.auth().onAuthStateChanged(function(user){
+if(user && user.email.toLowerCase() === "wehumanradio@gmail.com"){
+document.getElementById("loading").style.display = "none";
+document.getElementById("pageContent").style.display = "block";
+loadSubmissions();
+}else{
+window.location.href = "login.html";
+}
+});
+
+function loadSubmissions(){
+const list = document.getElementById("submissionsList");
+list.innerHTML = "Loading submissions...";
+
+db.collection("submissions").orderBy("submittedAt","desc").get()
+.then(function(snapshot){
+if(snapshot.empty){
+list.innerHTML = "<p>No submissions yet.</p>";
+return;
+}
+
+list.innerHTML = "";
+
+snapshot.forEach(function(doc){
+const data = doc.data();
+
+const card = document.createElement("div");
+card.className = "card";
+
+card.innerHTML = `
+<h2>${data.songTitle || "Untitled Song"}</h2>
+<p><strong>Artist:</strong> ${data.artistName || ""}</p>
+<p><strong>Email:</strong> ${data.email || ""}</p>
+<p><strong>Music Link:</strong> <a href="${data.musicLink || "#"}" target="_blank">Open Music</a></p>
+<p><strong>Cover Link:</strong> ${data.coverLink ? `<a href="${data.coverLink}" target="_blank">Open Cover</a>` : "None"}</p>
+<p><strong>Notes:</strong> ${data.notes || "None"}</p>
+<p><strong>Status:</strong> <span class="status">${data.status || "Pending Review"}</span></p>
+<button onclick="approveSubmission('${doc.id}')">APPROVE + ADD TO LIBRARY</button>
+<button class="reject" onclick="rejectSubmission('${doc.id}')">REJECT</button>
+`;
+
+list.appendChild(card);
+});
+});
+}
+
+function approveSubmission(id){
+db.collection("submissions").doc(id).get()
+.then(function(doc){
+if(doc.exists){
+const data = doc.data();
+
+db.collection("approvedSongs").add({
+songTitle:data.songTitle || "",
+artistName:data.artistName || "",
+audioSrc:data.musicLink || "",
+coverSrc:data.coverLink || "",
+submitterEmail:data.email || "",
+notes:data.notes || "",
+status:"Approved",
+sourceSubmissionId:id,
+addedAt:firebase.firestore.FieldValue.serverTimestamp()
+}).then(function(){
+db.collection("submissions").doc(id).update({
+status:"Approved - Added to Library"
+}).then(function(){
+loadSubmissions();
+});
+});
+}
+});
+}
+
+function rejectSubmission(id){
+db.collection("submissions").doc(id).update({
+status:"Rejected"
+}).then(function(){
+loadSubmissions();
+});
+}
+</script>
 
 </body>
 </html>
