@@ -19,11 +19,14 @@ body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-alig
 .logo span{color:red;}
 .tagline{font-size:20px;margin-top:10px;color:#ccc;}
 .submit-btn{display:inline-block;margin-top:20px;padding:13px 28px;background:red;color:white;text-decoration:none;border-radius:50px;font-weight:bold;}
-.player-card{width:90%;max-width:500px;margin:40px auto;padding:25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.3);}
-.album-art{width:100%;max-width:300px;border-radius:20px;border:3px solid red;}
-.live-badge{display:inline-block;margin-top:22px;padding:7px 16px;border-radius:50px;background:red;font-size:13px;font-weight:bold;}
+.player-card,.featured-card{width:90%;max-width:500px;margin:40px auto;padding:25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.3);}
+.album-art,.featured-img{width:100%;max-width:300px;border-radius:20px;border:3px solid red;}
+.live-badge,.featured-badge{display:inline-block;margin-top:22px;padding:7px 16px;border-radius:50px;background:red;font-size:13px;font-weight:bold;}
 .song-title{font-size:32px;font-weight:bold;margin-top:20px;}
 .artist{font-size:18px;color:#aaa;margin-bottom:20px;}
+.featured-title{font-size:28px;font-weight:bold;margin-top:20px;color:white;}
+.featured-bio{font-size:15px;color:#ccc;line-height:1.5;margin-top:10px;}
+.featured-link{display:inline-block;margin-top:18px;padding:12px 24px;background:red;color:white;text-decoration:none;border-radius:50px;font-weight:bold;}
 audio{width:100%;}
 .offline-box{display:none;width:90%;max-width:500px;margin:40px auto;padding:35px 25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.25);}
 .offline-box h2{color:red;margin-top:0;}
@@ -57,6 +60,22 @@ audio{width:100%;}
 <div class="offline-box" id="offlineBox">
 <h2>WH2 Radio is temporarily offline.</h2>
 <p>Please check back later for the next sound.</p>
+</div>
+
+<div class="featured-card" id="featuredCard">
+<img id="featuredImage" src="wh2-icon.png" class="featured-img">
+
+<div class="featured-badge">FEATURED ARTIST</div>
+
+<div class="featured-title" id="featuredArtistName">Featured Artist</div>
+
+<div class="featured-bio" id="featuredArtistBio">
+Artist spotlight coming soon.
+</div>
+
+<a id="featuredArtistLink" class="featured-link" href="#" target="_blank">
+VIEW ARTIST
+</a>
 </div>
 
 <div class="footer">
@@ -108,6 +127,18 @@ document.getElementById("offlineBox").style.display = "none";
 document.getElementById("playerCard").style.display = "none";
 document.getElementById("offlineBox").style.display = "block";
 }
+
+document.getElementById("featuredArtistName").innerText =
+data.featuredArtistName || "Featured Artist";
+
+document.getElementById("featuredArtistBio").innerText =
+data.featuredArtistBio || "Artist spotlight coming soon.";
+
+document.getElementById("featuredImage").src =
+data.featuredArtistImage || "wh2-icon.png";
+
+const featuredLink = document.getElementById("featuredArtistLink");
+featuredLink.href = data.featuredArtistLink || "#";
 }
 });
 
