@@ -13,148 +13,27 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <style>
-body{
-margin:0;
-background:#000;
-color:white;
-font-family:Arial,sans-serif;
-text-align:center;
-}
-
-.header{
-padding:40px 20px 30px;
-background:linear-gradient(to bottom,#2b0000,#000);
-border-bottom:1px solid red;
-}
-
-.logo{
-font-size:64px;
-font-weight:900;
-color:white;
-text-shadow:0 0 15px red;
-}
-
-.logo span{
-color:red;
-}
-
-.tagline{
-font-size:20px;
-margin-top:10px;
-color:#ccc;
-}
-
-.featured-card,
-.player-card,
-.submit-card{
-width:90%;
-max-width:500px;
-margin:35px auto;
-padding:25px;
-background:#111;
-border:1px solid red;
-border-radius:25px;
-box-shadow:0 0 25px rgba(255,0,0,.3);
-}
-
-.section-badge{
-display:inline-block;
-padding:8px 18px;
-border-radius:50px;
-background:red;
-font-size:13px;
-font-weight:bold;
-margin-bottom:18px;
-}
-
-.featured-img{
-width:100%;
-max-width:260px;
-border-radius:20px;
-border:3px solid red;
-}
-
-.album-art{
-width:100%;
-max-width:300px;
-border-radius:20px;
-border:3px solid red;
-}
-
-.featured-title{
-font-size:30px;
-font-weight:bold;
-margin-top:18px;
-}
-
-.featured-bio{
-font-size:15px;
-color:#ccc;
-line-height:1.5;
-margin-top:10px;
-}
-
-.featured-link,
-.submit-btn{
-display:inline-block;
-margin-top:18px;
-padding:13px 28px;
-background:red;
-color:white;
-text-decoration:none;
-border-radius:50px;
-font-weight:bold;
-}
-
-.song-title{
-font-size:32px;
-font-weight:bold;
-margin-top:20px;
-}
-
-.artist{
-font-size:18px;
-color:#aaa;
-margin-bottom:20px;
-}
-
-audio{
-width:100%;
-}
-
-.offline-box{
-display:none;
-width:90%;
-max-width:500px;
-margin:35px auto;
-padding:35px 25px;
-background:#111;
-border:1px solid red;
-border-radius:25px;
-box-shadow:0 0 25px rgba(255,0,0,.25);
-}
-
-.offline-box h2{
-color:red;
-margin-top:0;
-}
-
-.footer{
-padding:30px;
-color:#777;
-font-size:13px;
-}
-
-.footer a{
-color:#aaa;
-text-decoration:none;
-margin:0 6px;
-}
-
-.owner-link{
-font-size:11px;
-color:#222!important;
-}
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-align:center;}
+.header{padding:40px 20px 30px;background:linear-gradient(to bottom,#2b0000,#000);border-bottom:1px solid red;}
+.logo{font-size:64px;font-weight:900;color:white;text-shadow:0 0 15px red;}
+.logo span{color:red;}
+.tagline{font-size:20px;margin-top:10px;color:#ccc;}
+.featured-card,.player-card,.submit-card{width:90%;max-width:500px;margin:35px auto;padding:25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.3);}
+.section-badge{display:inline-block;padding:8px 18px;border-radius:50px;background:red;font-size:13px;font-weight:bold;margin-bottom:18px;}
+.featured-img{width:100%;max-width:260px;border-radius:20px;border:3px solid red;}
+.album-art{width:100%;max-width:300px;border-radius:20px;border:3px solid red;}
+.featured-title{font-size:30px;font-weight:bold;margin-top:18px;}
+.featured-bio{font-size:15px;color:#ccc;line-height:1.5;margin-top:10px;}
+.featured-link,.submit-btn{display:inline-block;margin-top:18px;padding:13px 28px;background:red;color:white;text-decoration:none;border-radius:50px;font-weight:bold;}
+.song-title{font-size:32px;font-weight:bold;margin-top:20px;}
+.artist{font-size:18px;color:#aaa;margin-bottom:20px;}
+audio{width:100%;}
+.offline-box{display:none;width:90%;max-width:500px;margin:35px auto;padding:35px 25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.25);}
+.offline-box h2{color:red;margin-top:0;}
+.footer{padding:30px;color:#777;font-size:13px;}
+.footer a{color:#aaa;text-decoration:none;margin:0 6px;}
+.owner-link{font-size:11px;color:#222!important;}
+.playlist-note{font-size:12px;color:#999;margin-top:12px;}
 </style>
 </head>
 
@@ -165,37 +44,25 @@ color:#222!important;
 <div class="tagline">AI Curated. Human Approved.</div>
 </div>
 
-<div class="featured-card" id="featuredCard">
-<div class="section-badge">FEATURED ARTIST OF THE WEEK</div>
-
-<br>
-
+<div class="featured-card">
+<div class="section-badge">FEATURED ARTIST OF THE WEEK</div><br>
 <img id="featuredImage" src="wh2-icon.png" class="featured-img">
-
 <div class="featured-title" id="featuredArtistName">Featured Artist</div>
-
-<div class="featured-bio" id="featuredArtistBio">
-Artist spotlight coming soon.
-</div>
-
-<a id="featuredArtistLink" class="featured-link" href="#" target="_blank">
-VIEW ARTIST
-</a>
+<div class="featured-bio" id="featuredArtistBio">Artist spotlight coming soon.</div>
+<a id="featuredArtistLink" class="featured-link" href="#" target="_blank">VIEW ARTIST</a>
 </div>
 
 <div class="player-card" id="playerCard">
-<div class="section-badge">NOW STREAMING</div>
-
-<br>
-
+<div class="section-badge">WH2 AUTO PLAYLIST</div><br>
 <img id="coverArt" src="wh2-icon.png" class="album-art">
-
 <div class="song-title" id="songTitle">Loading...</div>
 <div class="artist" id="artistName">Loading...</div>
 
 <audio id="radioPlayer" controls>
 <source id="audioSource" src="" type="audio/mpeg">
 </audio>
+
+<div class="playlist-note" id="playlistNote">Loading approved songs...</div>
 </div>
 
 <div class="offline-box" id="offlineBox">
@@ -206,9 +73,7 @@ VIEW ARTIST
 <div class="submit-card">
 <div class="section-badge">ARTISTS</div>
 <h2>Submit Music to WH2 Radio</h2>
-<p style="color:#ccc;line-height:1.5;">
-Artists can submit music links, cover art links, contact info, and notes for review.
-</p>
+<p style="color:#ccc;line-height:1.5;">Artists can submit music links, cover art links, contact info, and notes for review.</p>
 <a class="submit-btn" href="submit.html">SUBMIT MUSIC</a>
 </div>
 
@@ -236,26 +101,66 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const radioRef = db.collection("settings").doc("radio");
 
-radioRef.onSnapshot(function(doc){
-if(doc.exists){
-const data = doc.data();
-
-document.getElementById("songTitle").innerText =
-data.currentSong || "WH2 Radio";
-
-document.getElementById("artistName").innerText =
-data.currentArtist || "WH2 Artist";
-
-document.getElementById("coverArt").src =
-data.coverSrc || "wh2-icon.png";
+let playlist = [];
+let currentIndex = 0;
 
 const audioPlayer = document.getElementById("radioPlayer");
 const audioSource = document.getElementById("audioSource");
 
-if(data.audioSrc && audioSource.getAttribute("src") !== data.audioSrc){
-audioSource.src = data.audioSrc;
-audioPlayer.load();
+function loadSong(index){
+if(playlist.length === 0){
+document.getElementById("playlistNote").innerText = "No approved songs loaded yet.";
+return;
 }
+
+const song = playlist[index];
+
+document.getElementById("songTitle").innerText = song.songTitle || "WH2 Radio";
+document.getElementById("artistName").innerText = song.artistName || "WH2 Artist";
+document.getElementById("coverArt").src = song.coverSrc || "wh2-icon.png";
+
+audioSource.src = song.audioSrc || "";
+audioPlayer.load();
+
+document.getElementById("playlistNote").innerText =
+"Playing " + (index + 1) + " of " + playlist.length + " approved songs.";
+}
+
+audioPlayer.addEventListener("ended", function(){
+if(playlist.length > 0){
+currentIndex = (currentIndex + 1) % playlist.length;
+loadSong(currentIndex);
+audioPlayer.play();
+}
+});
+
+db.collection("approvedSongs").orderBy("addedAt","desc").onSnapshot(function(snapshot){
+playlist = [];
+
+snapshot.forEach(function(doc){
+playlist.push(doc.data());
+});
+
+if(playlist.length > 0){
+loadSong(currentIndex);
+}else{
+radioRef.get().then(function(doc){
+if(doc.exists){
+const data = doc.data();
+document.getElementById("songTitle").innerText = data.currentSong || "WH2 Radio";
+document.getElementById("artistName").innerText = data.currentArtist || "WH2 Artist";
+document.getElementById("coverArt").src = data.coverSrc || "wh2-icon.png";
+audioSource.src = data.audioSrc || "";
+audioPlayer.load();
+document.getElementById("playlistNote").innerText = "Playing current owner-selected track.";
+}
+});
+}
+});
+
+radioRef.onSnapshot(function(doc){
+if(doc.exists){
+const data = doc.data();
 
 if(data.isLive === true){
 document.getElementById("playerCard").style.display = "block";
@@ -263,16 +168,12 @@ document.getElementById("offlineBox").style.display = "none";
 }else{
 document.getElementById("playerCard").style.display = "none";
 document.getElementById("offlineBox").style.display = "block";
+audioPlayer.pause();
 }
 
-document.getElementById("featuredArtistName").innerText =
-data.featuredArtistName || "Featured Artist";
-
-document.getElementById("featuredArtistBio").innerText =
-data.featuredArtistBio || "Artist spotlight coming soon.";
-
-document.getElementById("featuredImage").src =
-data.featuredArtistImage || "wh2-icon.png";
+document.getElementById("featuredArtistName").innerText = data.featuredArtistName || "Featured Artist";
+document.getElementById("featuredArtistBio").innerText = data.featuredArtistBio || "Artist spotlight coming soon.";
+document.getElementById("featuredImage").src = data.featuredArtistImage || "wh2-icon.png";
 
 const featuredLink = document.getElementById("featuredArtistLink");
 featuredLink.href = data.featuredArtistLink || "#";
