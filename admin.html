@@ -72,8 +72,7 @@ Owner access confirmed. WH2 controls are connected.
 <textarea id="featuredBioInput" rows="4" placeholder="Featured Artist Bio"></textarea>
 <input id="featuredImageInput" type="text" placeholder="Featured Artist Image File Name or Image Link">
 <input id="featuredLinkInput" type="text" placeholder="Featured Artist Link">
-<div class="small">Example image: artist-photo.png<br>Example link: Instagram, YouTube, website, or music link</div>
-<button type="button" onclick="saveFeaturedArtist()">SAVE FEATURED ARTIST</button>
+<button onclick="saveFeaturedArtist()">SAVE FEATURED ARTIST</button>
 </div>
 
 <div class="card">
@@ -86,6 +85,12 @@ Owner access confirmed. WH2 controls are connected.
 <h2>🎵 Approved Songs Library</h2>
 <p>View approved songs, manage the music library, and make songs live on WH2 Radio.</p>
 <button onclick="location.href='library.html'">OPEN LIBRARY</button>
+</div>
+
+<div class="card">
+<h2>📊 Analytics</h2>
+<p>View submissions, approvals, rejections, and approved song library count.</p>
+<button onclick="location.href='analytics.html'">OPEN ANALYTICS</button>
 </div>
 
 <div class="card">
@@ -155,7 +160,6 @@ document.getElementById("songInput").value = data.currentSong || "";
 document.getElementById("artistInput").value = data.currentArtist || "";
 document.getElementById("audioInput").value = data.audioSrc || "";
 document.getElementById("coverInput").value = data.coverSrc || "";
-
 document.getElementById("featuredNameInput").value = data.featuredArtistName || "";
 document.getElementById("featuredBioInput").value = data.featuredArtistBio || "";
 document.getElementById("featuredImageInput").value = data.featuredArtistImage || "";
@@ -172,16 +176,11 @@ status ? "WH2 Radio is now LIVE." : "WH2 Radio is now OFFLINE.";
 }
 
 function saveSongInfo(){
-const song = document.getElementById("songInput").value.trim();
-const artist = document.getElementById("artistInput").value.trim();
-const audio = document.getElementById("audioInput").value.trim();
-const cover = document.getElementById("coverInput").value.trim();
-
 radioRef.update({
-currentSong:song,
-currentArtist:artist,
-audioSrc:audio,
-coverSrc:cover
+currentSong:document.getElementById("songInput").value.trim(),
+currentArtist:document.getElementById("artistInput").value.trim(),
+audioSrc:document.getElementById("audioInput").value.trim(),
+coverSrc:document.getElementById("coverInput").value.trim()
 }).then(function(){
 document.getElementById("statusMessage").innerText =
 "Song, audio, and cover information saved successfully.";
@@ -189,22 +188,14 @@ document.getElementById("statusMessage").innerText =
 }
 
 function saveFeaturedArtist(){
-const name = document.getElementById("featuredNameInput").value.trim();
-const bio = document.getElementById("featuredBioInput").value.trim();
-const image = document.getElementById("featuredImageInput").value.trim();
-const link = document.getElementById("featuredLinkInput").value.trim();
-
 radioRef.update({
-featuredArtistName:name,
-featuredArtistBio:bio,
-featuredArtistImage:image,
-featuredArtistLink:link
+featuredArtistName:document.getElementById("featuredNameInput").value.trim(),
+featuredArtistBio:document.getElementById("featuredBioInput").value.trim(),
+featuredArtistImage:document.getElementById("featuredImageInput").value.trim(),
+featuredArtistLink:document.getElementById("featuredLinkInput").value.trim()
 }).then(function(){
 document.getElementById("statusMessage").innerText =
 "Featured artist saved successfully.";
-}).catch(function(error){
-document.getElementById("statusMessage").innerText =
-"Featured artist failed to save: " + error.message;
 });
 }
 
