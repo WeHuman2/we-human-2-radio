@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WH2 Analytics</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
+.header{text-align:center;padding:30px 20px;border-bottom:1px solid red;background:linear-gradient(to bottom,#2b0000,#000);}
+.logo{font-size:55px;font-weight:900;text-shadow:0 0 18px red;}
+.logo span{color:red;}
+.container{width:92%;max-width:1000px;margin:30px auto;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
+.card{background:#111;border:1px solid red;border-radius:20px;padding:25px;text-align:center;}
+.number{font-size:45px;font-weight:bold;color:red;}
+.label{color:#ccc;margin-top:8px;}
+button{width:100%;padding:13px;margin-top:15px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;}
+.loading{text-align:center;padding:50px;color:#ccc;}
+</style>
+</head>
+
+<body>
+
+<div id="loading" class="loading">Checking owner access...</div>
+
+<div id="pageContent" style="display:none;">
+
+<div class="header">
+<div class="logo">WH<span>2</span></div>
+<h1>Station Analytics</h1>
+<p>Owner-only WH2 Radio stats.</p>
+</div>
+
+<div class="container">
+
+<button onclick="location.href='admin.html'">BACK TO DASHBOARD</button>
+
+<div class="grid">
+
+<div class="card">
+<div class="number" id="totalSubmissions">0</div>
+<div class="label">Total Submissions</div>
+</div>
+
+<div class="card">
+<div class="number" id="pendingSubmissions">0</div>
+<div class="label">Pending Submissions</div>
+</div>
+
+<div class="card">
+<div class="number" id="approvedSubmissions">0</div>
+<div class="label">Approved Submissions</div>
+</div>
+
+<div class="card">
+<div class="number" id="rejectedSubmissions">0</div>
+<div class="label">Rejected Submissions</div>
+</div>
+
+<div class="card">
+<div class="number" id="libraryCount">0</div>
+<div class="label">Approved Songs Library</div>
+</div>
+
+</div>
+
+<button onclick="location.href='submissions.html'">OPEN SUBMISSIONS</button>
+<button onclick="location.href='library.html'">OPEN LIBRARY</button>
+
+</div>
+
+</div>
+
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyDDpYf4GtbcIZ0OBu13qYqFqUt6H0s1C24",
+authDomain: "wh2-radio.firebaseapp.com",
+projectId: "wh2-radio",
+storageBucket: "wh2-radio.firebasestorage.app",
+messagingSenderId: "172232120211",
+appId: "1:172232120211:web:69a549acd85f286c5f3a66"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+firebase.auth().onAuthStateChanged(function(user){
+if(user && user.email.toLowerCase() === "wehumanradio@gmail.com"){
+document.getElementById("loading").style.display = "none";
+document.getElementById("pageContent").style.display = "block";
+loadAnalytics();
+}else{
+window.location.href = "login.html";
+}
+});
+
+function loadAnalytics(){
+db.collection("submissions").get().then(function(snapshot){
+let total = 0;
+let pending = 0;
+let approved = 0;
+let rejected = 0;
+
+snapshot.forEach(function(doc){
+total++;
+const status = (doc.data().status || "").toLowerCase();
+
+if(status.includes("pending")){
+pending++;
+}
+
+if(status.includes("approved")){
+approved++;
+}
+
+if(status.includes("rejected")){
+rejected++;
+}
+});
+
+document.getElementById("totalSubmissions").innerText = total;
+document.getElementById("pendingSubmissions").innerText = pending;
+document.getElementById("approvedSubmissions").innerText = approved;
+document.getElementById("rejectedSubmissions").innerText = rejected;
+});
+
+db.collection("approvedSongs").get().then(function(snapshot){
+document.getElementById("libraryCount").innerText = snapshot.size;
+});
+}
+</script>
+
+</body>
+</html>
