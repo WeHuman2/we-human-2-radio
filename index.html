@@ -11,22 +11,29 @@
 
 <style>
 body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-align:center;}
-.header{padding:45px 20px;background:linear-gradient(to bottom,#300000,#000);border-bottom:1px solid red;}
-.logo-img{width:120px;height:120px;object-fit:cover;border-radius:24px;border:2px solid red;box-shadow:0 0 24px rgba(255,0,0,.55);margin-bottom:18px;}
-.logo{font-size:88px;font-weight:900;letter-spacing:2px;text-shadow:0 0 22px red;}
+.header{padding:45px 20px 28px;background:linear-gradient(to bottom,#300000,#000);border-bottom:1px solid red;}
+.logo{font-size:96px;font-weight:900;letter-spacing:2px;text-shadow:0 0 24px red;line-height:.9;}
 .logo span{color:red;}
-.tagline{font-size:22px;color:#ccc;margin-top:8px;}
-.intro{max-width:680px;margin:16px auto 0;color:#ccc;line-height:1.5;}
-.card{width:90%;max-width:700px;margin:30px auto;padding:25px;background:#111;border:1px solid red;border-radius:22px;box-shadow:0 0 25px rgba(255,0,0,.25);}
+.tagline{font-size:24px;color:#ddd;margin-top:12px;font-weight:bold;}
+.subtitle{max-width:680px;margin:14px auto 0;color:#bbb;font-size:17px;line-height:1.4;}
+
+.card{width:90%;max-width:720px;margin:30px auto;padding:25px;background:#111;border:1px solid red;border-radius:24px;box-shadow:0 0 25px rgba(255,0,0,.25);}
 .card-small{max-width:560px;}
 .badge{display:inline-block;background:red;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:bold;margin-bottom:15px;}
 h2{margin:10px 0;}
 p{color:#ccc;line-height:1.5;}
 .button{display:inline-block;margin-top:15px;padding:14px 26px;background:red;color:white;text-decoration:none;border-radius:50px;font-weight:bold;}
-.player-placeholder{background:#050505;border:1px dashed red;border-radius:18px;padding:28px;color:#ccc;}
+
+.player-shell{background:radial-gradient(circle at top,#3a0000,#050505 65%);border:1px solid red;border-radius:26px;padding:25px;box-shadow:inset 0 0 25px rgba(255,0,0,.25);}
+.player-logo-img{width:240px;height:240px;object-fit:cover;border-radius:32px;border:3px solid red;box-shadow:0 0 35px rgba(255,0,0,.65);margin:8px auto 18px;display:block;}
+.player-title{font-size:28px;font-weight:900;margin:8px 0;}
+.player-subtitle{color:#aaa;font-size:15px;}
+.live365-placeholder{margin-top:18px;background:#000;border:1px dashed red;border-radius:18px;padding:18px;color:#ccc;}
+
 .install-mini{text-align:left;font-size:13px;line-height:1.4;color:#ccc;}
 .install-mini strong{color:red;}
 .install-mini p{margin:7px 0;}
+
 .footer{padding:30px;color:#777;font-size:13px;}
 .footer a{color:#aaa;text-decoration:none;margin:0 6px;}
 .owner-link{color:#222!important;font-size:11px;text-decoration:none;}
@@ -36,19 +43,21 @@ p{color:#ccc;line-height:1.5;}
 <body>
 
 <div class="header">
-<img src="wh2-icon.png" class="logo-img" alt="WH2 Logo">
 <div class="logo">WH<span>2</span></div>
 <div class="tagline">We Human Too</div>
-<div class="intro">
-AI-powered music discovery. Human approved. Radio-first listening for AI-assisted creators and independent artists.
-</div>
+<div class="subtitle">AI-powered radio for human-approved sound.</div>
 </div>
 
 <div class="card">
 <div class="badge">LIVE RADIO</div>
-<h2>WH2 Radio Player</h2>
-<div class="player-placeholder">
+<div class="player-shell">
+<img src="wh2-icon.png" class="player-logo-img" alt="WH2 Radio Logo">
+<div class="player-title">WH2 Radio Player</div>
+<div class="player-subtitle">AI Curated. Human Approved.</div>
+
+<div class="live365-placeholder">
 Live365 player will be connected here.
+</div>
 </div>
 </div>
 
