@@ -68,9 +68,7 @@ Welcome to WH2 Radio. Thank you for supporting independent artists and independe
 <div class="song-title" id="songTitle">Loading...</div>
 <div class="artist" id="artistName">Loading...</div>
 
-<audio id="radioPlayer" controls>
-<source id="audioSource" src="" type="audio/mpeg">
-</audio>
+<audio id="radioPlayer" controls preload="metadata"></audio>
 
 <div class="playlist-note" id="playlistNote">Loading approved songs...</div>
 </div>
@@ -145,7 +143,37 @@ let playlist = [];
 let currentIndex = 0;
 
 const audioPlayer = document.getElementById("radioPlayer");
-const audioSource = document.getElementById("audioSource");
+
+function getAudioType(url){
+const cleanUrl = url.split("?")[0].toLowerCase();
+
+if(cleanUrl.endsWith(".mp3")) return "audio/mpeg";
+if(cleanUrl.endsWith(".m4a")) return "audio/mp4";
+if(cleanUrl.endsWith(".aac")) return "audio/aac";
+if(cleanUrl.endsWith(".wav")) return "audio/wav";
+if(cleanUrl.endsWith(".ogg")) return "audio/ogg";
+
+return "";
+}
+
+function setAudioSource(url){
+audioPlayer.innerHTML = "";
+
+if(!url){
+return;
+}
+
+const source = document.createElement("source");
+source.src = url;
+const type = getAudioType(url);
+
+if(type){
+source.type = type;
+}
+
+audioPlayer.appendChild(source);
+audioPlayer.load();
+}
 
 function loadSong(index){
 if(playlist.length === 0){
@@ -159,8 +187,7 @@ document.getElementById("songTitle").innerText = song.songTitle || "WH2 Radio";
 document.getElementById("artistName").innerText = song.artistName || "WH2 Artist";
 document.getElementById("coverArt").src = song.coverSrc || "wh2-icon.png";
 
-audioSource.src = song.audioSrc || "";
-audioPlayer.load();
+setAudioSource(song.audioSrc || "");
 
 document.getElementById("playlistNote").innerText =
 "Playing " + (index + 1) + " of " + playlist.length + " approved songs.";
@@ -172,6 +199,11 @@ currentIndex = (currentIndex + 1) % playlist.length;
 loadSong(currentIndex);
 audioPlayer.play();
 }
+});
+
+audioPlayer.addEventListener("error", function(){
+document.getElementById("playlistNote").innerText =
+"Audio could not load. Use a public direct audio link ending in .mp3, .m4a, .wav, .aac, or .ogg.";
 });
 
 db.collection("approvedSongs").orderBy("addedAt","desc").onSnapshot(function(snapshot){
@@ -190,8 +222,7 @@ const data = doc.data();
 document.getElementById("songTitle").innerText = data.currentSong || "WH2 Radio";
 document.getElementById("artistName").innerText = data.currentArtist || "WH2 Artist";
 document.getElementById("coverArt").src = data.coverSrc || "wh2-icon.png";
-audioSource.src = data.audioSrc || "";
-audioPlayer.load();
+setAudioSource(data.audioSrc || "");
 document.getElementById("playlistNote").innerText = "Playing current owner-selected track.";
 }
 });
