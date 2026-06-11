@@ -3,27 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WH2 Admin Dashboard</title>
+<title>WH2 Owner Dashboard</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <style>
-body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2b0000 0%,#000 45%,#000 100%);color:white;font-family:Arial,sans-serif;}
-.header{text-align:center;padding:25px 20px;border-bottom:1px solid red;}
-.logo{font-size:55px;font-weight:900;text-shadow:0 0 18px red;}
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
+.header{text-align:center;padding:30px 20px;background:linear-gradient(to bottom,#300000,#000);border-bottom:1px solid red;}
+.logo{font-size:70px;font-weight:900;text-shadow:0 0 22px red;}
 .logo span{color:red;}
-.subtitle{color:#aaa;margin-top:8px;}
-.logout{margin-top:15px;background:red;color:white;border:none;border-radius:50px;padding:12px 25px;font-weight:bold;}
-.notice{width:90%;max-width:1000px;margin:20px auto;padding:18px;border:1px solid red;border-radius:18px;background:#111;text-align:center;}
-.dashboard{width:92%;max-width:1000px;margin:30px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;}
-.card{background:#111;border:1px solid red;border-radius:22px;padding:22px;}
+.subtitle{color:#ccc;margin-top:8px;font-size:17px;}
+.logout{margin-top:15px;background:red;color:white;border:none;border-radius:50px;padding:12px 24px;font-weight:bold;}
+.notice{width:90%;max-width:1050px;margin:22px auto;padding:18px;background:#111;border:1px solid red;border-radius:18px;text-align:center;}
+.grid{width:92%;max-width:1100px;margin:30px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;}
+.card{background:#111;border:1px solid red;border-radius:22px;padding:22px;box-shadow:0 0 20px rgba(255,0,0,.2);}
 .card h2{color:red;margin-top:0;}
-.card p{color:#bbb;font-size:14px;line-height:1.5;}
-input,textarea{width:92%;padding:12px;margin-top:10px;background:black;color:white;border:1px solid red;border-radius:12px;}
-button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;}
-.loading{text-align:center;padding:60px 20px;font-size:20px;color:#ccc;}
+.card p{color:#bbb;line-height:1.5;font-size:14px;}
+input,textarea{width:92%;padding:12px;margin-top:10px;background:#000;color:white;border:1px solid red;border-radius:12px;}
+button{width:100%;padding:13px;margin-top:10px;background:red;color:white;border:none;border-radius:50px;font-weight:bold;}
+.loading{text-align:center;padding:60px 20px;color:#ccc;font-size:20px;}
 .footer{text-align:center;color:#666;padding:25px;}
 </style>
 </head>
@@ -36,106 +36,103 @@ button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;ba
 
 <div class="header">
 <div class="logo">WH<span>2</span></div>
-<div class="subtitle">Welcome, Troy • Owner Dashboard</div>
+<div class="subtitle">Owner Dashboard • We Human Too Radio</div>
 <button class="logout" onclick="logoutOwner()">LOGOUT</button>
 </div>
 
 <div class="notice" id="statusMessage">
-Owner access confirmed. WH2 controls are connected.
+WH2 owner controls are connected.
 </div>
 
-<div class="dashboard">
+<div class="grid">
 
 <div class="card">
-<h2>📻 Radio Controls</h2>
-<p>Turn WH2 Radio on or off for listeners.</p>
-<button onclick="setRadioStatus(true)">TURN RADIO ON</button>
-<button onclick="setRadioStatus(false)">TURN RADIO OFF</button>
-</div>
-
-<div class="card">
-<h2>🎙️ DJ Troy Message</h2>
-<p>Update the station message shown on the public WH2 Radio player.</p>
-<textarea id="stationMessageInput" rows="5" placeholder="Station Message"></textarea>
-<button onclick="saveStationMessage()">SAVE STATION MESSAGE</button>
+<h2>📻 Station Controls</h2>
+<p>Turn the WH2 station on or off for listeners.</p>
+<button onclick="setRadioStatus(true)">TURN STATION ON</button>
+<button onclick="setRadioStatus(false)">TURN STATION OFF</button>
 </div>
 
 <div class="card">
-<h2>🎵 Song Control</h2>
-<p>Update the current song, artist, MP3 file, and cover image.</p>
-<input id="songInput" type="text" placeholder="Song Title">
-<input id="artistInput" type="text" placeholder="Artist Name">
-<input id="audioInput" type="text" placeholder="MP3 File Name">
-<input id="coverInput" type="text" placeholder="Cover Image File Name">
-<button onclick="saveSongInfo()">SAVE SONG DETAILS</button>
+<h2>📢 Station Message</h2>
+<p>Update the public station message shown on the homepage.</p>
+<textarea id="stationMessageInput" rows="5" placeholder="Station message"></textarea>
+<button onclick="saveStationMessage()">SAVE MESSAGE</button>
 </div>
 
 <div class="card">
-<h2>⭐ Featured Artist</h2>
-<p>Update the featured artist section.</p>
-<input id="featuredNameInput" type="text" placeholder="Featured Artist Name">
-<textarea id="featuredBioInput" rows="4" placeholder="Featured Artist Bio"></textarea>
-<input id="featuredImageInput" type="text" placeholder="Featured Artist Image">
-<input id="featuredLinkInput" type="text" placeholder="Featured Artist Link">
-<button onclick="saveFeaturedArtist()">SAVE FEATURED ARTIST</button>
+<h2>🎙️ Live365 Player</h2>
+<p>Use this area to save the Live365 station link or embed code once it is ready.</p>
+<textarea id="live365Input" rows="5" placeholder="Live365 link or embed code"></textarea>
+<button onclick="saveLive365()">SAVE LIVE365 INFO</button>
 </div>
 
 <div class="card">
-<h2>📥 Review Submissions</h2>
-<p>Review artist music submissions.</p>
+<h2>📥 Music Submissions</h2>
+<p>Review submitted songs from AI-assisted creators and independent artists.</p>
 <button onclick="location.href='submissions.html'">OPEN SUBMISSIONS</button>
 </div>
 
 <div class="card">
-<h2>🎵 Approved Songs Library</h2>
-<p>Manage approved songs and make songs live.</p>
+<h2>🎵 Music Library</h2>
+<p>View approved songs that can be used for WH2 radio programming.</p>
 <button onclick="location.href='library.html'">OPEN LIBRARY</button>
 </div>
 
 <div class="card">
-<h2>💬 Community Wall</h2>
-<p>Review, hide, show, or delete listener comments from the WH2 Community Wall.</p>
-<button onclick="location.href='moderation.html'">MODERATE COMMUNITY</button>
+<h2>👤 Artist Database</h2>
+<p>View approved artists and creator records.</p>
+<button onclick="location.href='artists.html'">OPEN ARTISTS</button>
+</div>
+
+<div class="card">
+<h2>⭐ Featured Creator</h2>
+<p>Manage the featured artist or creator shown on WH2.</p>
+<input id="featuredNameInput" type="text" placeholder="Featured Creator Name">
+<textarea id="featuredBioInput" rows="4" placeholder="Featured Creator Bio"></textarea>
+<input id="featuredImageInput" type="text" placeholder="Image Link optional">
+<input id="featuredLinkInput" type="text" placeholder="Creator Link optional">
+<button onclick="saveFeaturedCreator()">SAVE FEATURED CREATOR</button>
 </div>
 
 <div class="card">
 <h2>📊 Analytics</h2>
-<p>View submissions, approvals, rejections, and library count.</p>
+<p>View submission counts, approved songs, and station activity.</p>
 <button onclick="location.href='analytics.html'">OPEN ANALYTICS</button>
 </div>
 
 <div class="card">
-<h2>📤 Share WH2 Radio</h2>
-<p>Share the public WH2 Radio player link.</p>
+<h2>📤 Share Station</h2>
+<p>Copy or share the public WH2 Radio homepage.</p>
 <input id="shareLink" type="text" value="https://wehuman2.github.io/we-human-2-radio/" readonly>
-<button onclick="copyPlayerLink()">COPY PLAYER LINK</button>
-<button onclick="sharePlayerLink()">SHARE RADIO</button>
+<button onclick="copyStationLink()">COPY STATION LINK</button>
+<button onclick="shareStation()">SHARE STATION</button>
 </div>
 
 <div class="card">
-<h2>⚖ Legal Center</h2>
-<p>Open WH2 legal pages.</p>
+<h2>⚖ Legal Pages</h2>
+<p>Open the WH2 legal and policy pages.</p>
 <button onclick="location.href='terms.html'">TERMS</button>
 <button onclick="location.href='privacy.html'">PRIVACY</button>
 <button onclick="location.href='copyright.html'">COPYRIGHT</button>
-<button onclick="location.href='submission.html'">SUBMISSION</button>
+<button onclick="location.href='submission.html'">SUBMISSION AGREEMENT</button>
 </div>
 
 <div class="card">
 <h2>📋 Owner Instructions</h2>
-<p>Open the WH2 instruction guide.</p>
+<p>Open the WH2 operating instructions.</p>
 <button onclick="location.href='instructions.html'">OPEN INSTRUCTIONS</button>
 </div>
 
 <div class="card">
-<h2>🎧 View Radio</h2>
-<p>Open the public WH2 Radio player.</p>
-<button onclick="location.href='index.html'">VIEW PLAYER</button>
+<h2>🎧 View Public Site</h2>
+<p>Open the public WH2 Radio homepage.</p>
+<button onclick="location.href='index.html'">VIEW WH2 RADIO</button>
 </div>
 
 </div>
 
-<div class="footer">WH2 Admin Dashboard © 2026</div>
+<div class="footer">WH2 Radio Owner Dashboard © 2026</div>
 
 </div>
 
@@ -155,81 +152,71 @@ const radioRef = db.collection("settings").doc("radio");
 
 firebase.auth().onAuthStateChanged(function(user){
 if(user && user.email.toLowerCase() === "wehumanradio@gmail.com"){
-document.getElementById("loading").style.display = "none";
-document.getElementById("adminContent").style.display = "block";
-loadCurrentSettings();
+document.getElementById("loading").style.display="none";
+document.getElementById("adminContent").style.display="block";
+loadSettings();
 }else{
-window.location.href = "login.html";
+window.location.href="login.html";
 }
 });
 
-function loadCurrentSettings(){
+function loadSettings(){
 radioRef.get().then(function(doc){
 if(doc.exists){
-const data = doc.data();
-document.getElementById("stationMessageInput").value = data.stationMessage || "";
-document.getElementById("songInput").value = data.currentSong || "";
-document.getElementById("artistInput").value = data.currentArtist || "";
-document.getElementById("audioInput").value = data.audioSrc || "";
-document.getElementById("coverInput").value = data.coverSrc || "";
-document.getElementById("featuredNameInput").value = data.featuredArtistName || "";
-document.getElementById("featuredBioInput").value = data.featuredArtistBio || "";
-document.getElementById("featuredImageInput").value = data.featuredArtistImage || "";
-document.getElementById("featuredLinkInput").value = data.featuredArtistLink || "";
+const data=doc.data();
+document.getElementById("stationMessageInput").value=data.stationMessage || "";
+document.getElementById("live365Input").value=data.live365Info || "";
+document.getElementById("featuredNameInput").value=data.featuredName || "";
+document.getElementById("featuredBioInput").value=data.featuredBio || "";
+document.getElementById("featuredImageInput").value=data.featuredImage || "";
+document.getElementById("featuredLinkInput").value=data.featuredLink || "";
 }
 });
 }
 
 function setRadioStatus(status){
-radioRef.update({isLive:status}).then(function(){
+radioRef.set({isLive:status},{merge:true}).then(function(){
 document.getElementById("statusMessage").innerText =
-status ? "WH2 Radio is now LIVE." : "WH2 Radio is now OFFLINE.";
+status ? "WH2 station is now ON." : "WH2 station is now OFF.";
 });
 }
 
 function saveStationMessage(){
-radioRef.update({
+radioRef.set({
 stationMessage:document.getElementById("stationMessageInput").value.trim()
-}).then(function(){
-document.getElementById("statusMessage").innerText =
-"DJ Troy station message saved successfully.";
+},{merge:true}).then(function(){
+document.getElementById("statusMessage").innerText="Station message saved.";
 });
 }
 
-function saveSongInfo(){
-radioRef.update({
-currentSong:document.getElementById("songInput").value.trim(),
-currentArtist:document.getElementById("artistInput").value.trim(),
-audioSrc:document.getElementById("audioInput").value.trim(),
-coverSrc:document.getElementById("coverInput").value.trim()
-}).then(function(){
-document.getElementById("statusMessage").innerText =
-"Song, audio, and cover information saved successfully.";
+function saveLive365(){
+radioRef.set({
+live365Info:document.getElementById("live365Input").value.trim()
+},{merge:true}).then(function(){
+document.getElementById("statusMessage").innerText="Live365 information saved.";
 });
 }
 
-function saveFeaturedArtist(){
-radioRef.update({
-featuredArtistName:document.getElementById("featuredNameInput").value.trim(),
-featuredArtistBio:document.getElementById("featuredBioInput").value.trim(),
-featuredArtistImage:document.getElementById("featuredImageInput").value.trim(),
-featuredArtistLink:document.getElementById("featuredLinkInput").value.trim()
-}).then(function(){
-document.getElementById("statusMessage").innerText =
-"Featured artist saved successfully.";
+function saveFeaturedCreator(){
+radioRef.set({
+featuredName:document.getElementById("featuredNameInput").value.trim(),
+featuredBio:document.getElementById("featuredBioInput").value.trim(),
+featuredImage:document.getElementById("featuredImageInput").value.trim(),
+featuredLink:document.getElementById("featuredLinkInput").value.trim()
+},{merge:true}).then(function(){
+document.getElementById("statusMessage").innerText="Featured creator saved.";
 });
 }
 
-function copyPlayerLink(){
-const link = document.getElementById("shareLink").value;
+function copyStationLink(){
+const link=document.getElementById("shareLink").value;
 navigator.clipboard.writeText(link).then(function(){
-document.getElementById("statusMessage").innerText = "Player link copied.";
+document.getElementById("statusMessage").innerText="Station link copied.";
 });
 }
 
-function sharePlayerLink(){
-const link = document.getElementById("shareLink").value;
-
+function shareStation(){
+const link=document.getElementById("shareLink").value;
 if(navigator.share){
 navigator.share({
 title:"WH2 Radio",
@@ -238,14 +225,13 @@ url:link
 });
 }else{
 navigator.clipboard.writeText(link);
-document.getElementById("statusMessage").innerText =
-"Sharing is not supported on this device, so the player link was copied.";
+document.getElementById("statusMessage").innerText="Sharing not supported here, so the link was copied.";
 }
 }
 
 function logoutOwner(){
 firebase.auth().signOut().then(function(){
-window.location.href = "login.html";
+window.location.href="login.html";
 });
 }
 </script>
