@@ -18,7 +18,7 @@ body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-alig
 .logo{font-size:64px;font-weight:900;color:white;text-shadow:0 0 15px red;}
 .logo span{color:red;}
 .tagline{font-size:20px;margin-top:10px;color:#ccc;}
-.featured-card,.player-card,.submit-card{width:90%;max-width:500px;margin:35px auto;padding:25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.3);}
+.featured-card,.player-card,.submit-card,.install-card{width:90%;max-width:500px;margin:35px auto;padding:25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.3);}
 .section-badge{display:inline-block;padding:8px 18px;border-radius:50px;background:red;font-size:13px;font-weight:bold;margin-bottom:18px;}
 .featured-img{width:100%;max-width:260px;border-radius:20px;border:3px solid red;}
 .album-art{width:100%;max-width:300px;border-radius:20px;border:3px solid red;}
@@ -30,6 +30,8 @@ body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-alig
 audio{width:100%;}
 .offline-box{display:none;width:90%;max-width:500px;margin:35px auto;padding:35px 25px;background:#111;border:1px solid red;border-radius:25px;box-shadow:0 0 25px rgba(255,0,0,.25);}
 .offline-box h2{color:red;margin-top:0;}
+.install-grid{text-align:left;color:#ccc;line-height:1.6;}
+.install-grid h3{color:red;margin-bottom:5px;}
 .footer{padding:30px;color:#777;font-size:13px;}
 .footer a{color:#aaa;text-decoration:none;margin:0 6px;}
 .owner-link{font-size:11px;color:#222!important;}
@@ -73,8 +75,29 @@ audio{width:100%;}
 <div class="submit-card">
 <div class="section-badge">ARTISTS</div>
 <h2>Submit Music to WH2 Radio</h2>
-<p style="color:#ccc;line-height:1.5;">Artists can submit music links, cover art links, contact info, and notes for review.</p>
+<p style="color:#ccc;line-height:1.5;">
+Artists can submit music links, cover art links, contact info, and notes for review.
+</p>
 <a class="submit-btn" href="submit.html">SUBMIT MUSIC</a>
+</div>
+
+<div class="install-card">
+<div class="section-badge">INSTALL WH2 RADIO</div>
+<h2>Add WH2 to Your Phone</h2>
+
+<div class="install-grid">
+<h3>🤖 Android</h3>
+<p>1. Open this page in Chrome.</p>
+<p>2. Tap the three dots in the top-right corner.</p>
+<p>3. Tap <strong>Add to Home Screen</strong> or <strong>Install App</strong>.</p>
+<p>4. Open WH2 from your phone home screen.</p>
+
+<h3>🍎 iPhone</h3>
+<p>1. Open this page in Safari.</p>
+<p>2. Tap the Share button.</p>
+<p>3. Tap <strong>Add to Home Screen</strong>.</p>
+<p>4. Tap Add and open WH2 from your home screen.</p>
+</div>
 </div>
 
 <div class="footer">
@@ -171,9 +194,14 @@ document.getElementById("offlineBox").style.display = "block";
 audioPlayer.pause();
 }
 
-document.getElementById("featuredArtistName").innerText = data.featuredArtistName || "Featured Artist";
-document.getElementById("featuredArtistBio").innerText = data.featuredArtistBio || "Artist spotlight coming soon.";
-document.getElementById("featuredImage").src = data.featuredArtistImage || "wh2-icon.png";
+document.getElementById("featuredArtistName").innerText =
+data.featuredArtistName || "Featured Artist";
+
+document.getElementById("featuredArtistBio").innerText =
+data.featuredArtistBio || "Artist spotlight coming soon.";
+
+document.getElementById("featuredImage").src =
+data.featuredArtistImage || "wh2-icon.png";
 
 const featuredLink = document.getElementById("featuredArtistLink");
 featuredLink.href = data.featuredArtistLink || "#";
