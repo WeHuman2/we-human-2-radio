@@ -15,7 +15,7 @@ body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
 .logo span{color:red;}
 h1{text-align:center;color:red;}
 p{color:#ccc;line-height:1.5;}
-input,textarea{width:95%;padding:14px;margin:10px 0;background:#000;color:white;border:1px solid red;border-radius:12px;font-size:15px;}
+input,textarea,select{width:95%;padding:14px;margin:10px 0;background:#000;color:white;border:1px solid red;border-radius:12px;font-size:15px;}
 button{width:100%;padding:15px;margin-top:15px;background:red;color:white;border:none;border-radius:50px;font-weight:bold;font-size:16px;}
 label{display:block;color:#ccc;font-size:14px;line-height:1.5;margin-top:15px;}
 .message{margin-top:15px;color:#ff7777;text-align:center;}
@@ -35,11 +35,30 @@ a{color:red;}
 
 <input id="artistName" type="text" placeholder="Artist Name">
 <input id="songTitle" type="text" placeholder="Song Title">
+
+<select id="genreInput">
+<option value="">Select Genre</option>
+<option>Hip-Hop</option>
+<option>R&B</option>
+<option>Pop</option>
+<option>Gospel</option>
+<option>Country</option>
+<option>Jazz</option>
+<option>Afrobeats</option>
+<option>Indie</option>
+<option>Rock</option>
+<option>Alternative</option>
+<option>Reggae</option>
+<option>Dancehall</option>
+<option>Latin</option>
+<option>Other</option>
+</select>
+
 <input id="email" type="email" placeholder="Contact Email">
 <input id="musicLink" type="text" placeholder="Music Link: Google Drive, Dropbox, SoundCloud, YouTube, etc.">
 <input id="coverLink" type="text" placeholder="Cover Art Link optional">
 
-<textarea id="notes" rows="4" placeholder="Notes, genre, clean/explicit, social links, or anything Troy should know"></textarea>
+<textarea id="notes" rows="4" placeholder="Notes, clean/explicit, social links, or anything Troy should know"></textarea>
 
 <label>
 <input id="permission" type="checkbox">
@@ -78,6 +97,7 @@ const db = firebase.firestore();
 function submitMusic(){
 const artistName = document.getElementById("artistName").value.trim();
 const songTitle = document.getElementById("songTitle").value.trim();
+const genre = document.getElementById("genreInput").value;
 const email = document.getElementById("email").value.trim();
 const musicLink = document.getElementById("musicLink").value.trim();
 const coverLink = document.getElementById("coverLink").value.trim();
@@ -86,12 +106,14 @@ const permission = document.getElementById("permission").checked;
 const agreement = document.getElementById("agreement").checked;
 const messageBox = document.getElementById("messageBox");
 
-if(!artistName || !songTitle || !email || !musicLink){
-messageBox.innerText = "Please complete artist name, song title, email, and music link.";
+if(!artistName || !songTitle || !genre || !email || !musicLink){
+messageBox.style.color = "#ff7777";
+messageBox.innerText = "Please complete artist name, song title, genre, email, and music link.";
 return;
 }
 
 if(!permission || !agreement){
+messageBox.style.color = "#ff7777";
 messageBox.innerText = "Please check both agreement boxes before submitting.";
 return;
 }
@@ -99,6 +121,7 @@ return;
 db.collection("submissions").add({
 artistName: artistName,
 songTitle: songTitle,
+genre: genre,
 email: email,
 musicLink: musicLink,
 coverLink: coverLink,
@@ -112,6 +135,7 @@ messageBox.style.color = "#66ff99";
 messageBox.innerText = "Submission received. WH2 Radio will review your music.";
 document.getElementById("artistName").value = "";
 document.getElementById("songTitle").value = "";
+document.getElementById("genreInput").value = "";
 document.getElementById("email").value = "";
 document.getElementById("musicLink").value = "";
 document.getElementById("coverLink").value = "";
