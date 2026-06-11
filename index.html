@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WH2 AI Radio</title>
+<title>WH2 Radio</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff0000">
@@ -19,31 +19,27 @@ body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-alig
 .logo span{color:red;}
 .tagline{font-size:20px;margin-top:10px;color:#ccc;}
 
-.message-banner{width:100%;overflow:hidden;background:red;color:white;font-weight:bold;padding:10px 0;white-space:nowrap;}
-.message-scroll{display:inline-block;padding-left:100%;animation:scrollText 18s linear infinite;}
+.banner{width:100%;overflow:hidden;background:red;color:white;font-weight:bold;padding:10px 0;white-space:nowrap;}
+.scroll{display:inline-block;padding-left:100%;animation:scrollText 18s linear infinite;}
 @keyframes scrollText{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
 
-.card{width:90%;max-width:520px;margin:28px auto;padding:22px;background:#111;border:1px solid red;border-radius:22px;box-shadow:0 0 22px rgba(255,0,0,.25);}
+.card{width:90%;max-width:760px;margin:28px auto;padding:22px;background:#111;border:1px solid red;border-radius:22px;box-shadow:0 0 22px rgba(255,0,0,.25);}
 .badge{display:inline-block;padding:8px 16px;border-radius:50px;background:red;font-size:13px;font-weight:bold;margin-bottom:16px;}
-h2{color:white;margin:10px 0;}
+h2{margin:10px 0;color:white;}
 p{color:#ccc;line-height:1.5;}
-.featured-img,.album-art{width:100%;max-width:260px;border-radius:18px;border:3px solid red;}
-.title{font-size:30px;font-weight:bold;margin-top:18px;}
-.subtext{font-size:16px;color:#aaa;margin-top:8px;}
-.genre-tag{display:inline-block;background:#220000;border:1px solid red;border-radius:50px;padding:7px 14px;font-size:13px;margin:12px 0 18px;}
 .button{display:inline-block;margin-top:14px;padding:13px 24px;background:red;color:white;text-decoration:none;border-radius:50px;font-weight:bold;border:none;cursor:pointer;}
-audio{width:100%;}
 
-.live365-box{background:#050505;border:1px dashed red;border-radius:18px;padding:20px;color:#ccc;}
-.live365-box strong{color:red;}
+.radio-box{background:#050505;border:1px dashed red;border-radius:18px;padding:20px;color:#ccc;}
+.radio-box strong{color:red;}
 
-.offline-box{display:none;width:90%;max-width:520px;margin:28px auto;padding:30px 22px;background:#111;border:1px solid red;border-radius:22px;}
-.offline-box h2{color:red;}
-
-.comment-form input,.comment-form textarea{width:92%;padding:12px;margin-top:10px;background:#000;color:white;border:1px solid red;border-radius:12px;}
 .comment{border-top:1px solid rgba(255,0,0,.45);padding:12px 0;text-align:left;}
 .comment-name{color:red;font-weight:bold;}
 .comment-text{color:#ddd;margin-top:4px;}
+
+input,textarea{width:92%;padding:12px;margin-top:10px;background:#000;color:white;border:1px solid red;border-radius:12px;}
+
+.submit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:18px;}
+.submit-box{background:#050505;border:1px solid rgba(255,0,0,.6);border-radius:18px;padding:18px;}
 
 .install-mini{font-size:13px;text-align:left;color:#ccc;line-height:1.4;}
 .install-mini strong{color:red;}
@@ -51,7 +47,6 @@ audio{width:100%;}
 .footer{padding:30px;color:#777;font-size:13px;}
 .footer a{color:#aaa;text-decoration:none;margin:0 6px;}
 .owner-link{font-size:11px;color:#222!important;}
-.note{font-size:12px;color:#999;margin-top:12px;}
 </style>
 </head>
 
@@ -62,66 +57,52 @@ audio{width:100%;}
 <div class="tagline">AI Curated. Human Approved.</div>
 </div>
 
-<div class="message-banner">
-<div class="message-scroll" id="stationMessage">
-Welcome to WH2 AI Radio. Supporting AI-generated music, digital creators, and new sounds.
+<div class="banner">
+<div class="scroll" id="stationMessage">
+Welcome to WH2 Radio — AI sounds, independent creators, and human-approved music.
 </div>
 </div>
 
 <div class="card">
-<div class="badge">LIVE365 RADIO PLAYER</div>
-<h2>WH2 AI Radio Stream</h2>
-<div class="live365-box" id="live365Box">
-<strong>Live365 player coming next.</strong><br>
-This section is reserved for the official Live365 WH2 stream once the station link or embed code is received.
+<div class="badge">WH2 RADIO PLAYER</div>
+<h2>Listen Live</h2>
+<div class="radio-box" id="live365Box">
+<strong>Live365 player will go here.</strong><br>
+Once the Live365 station link or embed code is ready, this section becomes the official WH2 radio player.
 </div>
 </div>
 
 <div class="card">
-<div class="badge">FEATURED AI CREATOR</div><br>
-<img id="featuredImage" src="wh2-icon.png" class="featured-img">
-<div class="title" id="featuredArtistName">Featured AI Creator</div>
-<p id="featuredArtistBio">AI creator spotlight coming soon.</p>
-<a id="featuredArtistLink" class="button" href="#" target="_blank">VIEW CREATOR</a>
-</div>
+<div class="badge">THE HIVE CONVERSATION</div>
+<h2>What Listeners Are Saying</h2>
+<div id="homeComments">Loading conversation...</div>
 
-<div class="card" id="playerCard">
-<div class="badge">APPROVED AI PLAYLIST</div><br>
-<img id="coverArt" src="wh2-icon.png" class="album-art">
-<div class="title" id="songTitle">Loading...</div>
-<div class="subtext" id="artistName">Loading...</div>
-<div class="genre-tag" id="genreTag">AI Music</div>
-
-<audio id="radioPlayer" controls preload="metadata"></audio>
-
-<div class="note" id="playlistNote">Loading approved AI songs...</div>
-</div>
-
-<div class="offline-box" id="offlineBox">
-<h2>WH2 AI Radio is temporarily offline.</h2>
-<p>Please check back later.</p>
-</div>
-
-<div class="card">
-<div class="badge">AI CREATORS</div>
-<h2>Submit AI Music</h2>
-<p>Submit AI-generated songs, cover art links, creator info, AI tool used, and notes for review.</p>
-<a class="button" href="submit.html">SUBMIT AI MUSIC</a>
-</div>
-
-<div class="card">
-<div class="badge">COMMUNITY WALL</div>
 <h2>Join the Conversation</h2>
-<p>Leave feedback, show love, and support AI music creators.</p>
-
-<div class="comment-form">
+<p>Leave a shoutout, show love, or support the music playing on WH2.</p>
 <input id="nameInput" type="text" placeholder="Your Name">
-<textarea id="commentInput" rows="3" placeholder="Write a community message"></textarea>
+<textarea id="commentInput" rows="3" placeholder="Write your message"></textarea>
 <button class="button" onclick="postComment()">POST MESSAGE</button>
 <p id="commentStatus" style="font-size:13px;"></p>
 </div>
 
-<div id="homeComments">Loading community messages...</div>
+<div class="card">
+<div class="badge">SUBMIT MUSIC</div>
+<h2>Submit to WH2 Radio</h2>
+<p>WH2 accepts both AI-generated music and independent human-created music for review.</p>
+
+<div class="submit-grid">
+<div class="submit-box">
+<h2>AI Music</h2>
+<p>Submit AI-generated songs, AI-assisted tracks, AI creator info, tool used, genre, and cover art.</p>
+<a class="button" href="submit.html">SUBMIT AI MUSIC</a>
+</div>
+
+<div class="submit-box">
+<h2>Human Music</h2>
+<p>Independent artists can submit original songs, artist info, genre, cover art, and music links for review.</p>
+<a class="button" href="submit-human.html">SUBMIT HUMAN MUSIC</a>
+</div>
+</div>
 </div>
 
 <div class="card">
@@ -134,11 +115,11 @@ This section is reserved for the official Live365 WH2 stream once the station li
 </div>
 
 <div class="footer">
-WH2 AI Radio © 2026<br><br>
+WH2 Radio © 2026<br><br>
 <a href="terms.html">Terms</a>
 <a href="privacy.html">Privacy</a>
 <a href="copyright.html">Copyright</a>
-<a href="submission.html">AI Music Submission</a>
+<a href="submission.html">Music Submission</a>
 <br><br>
 <a class="owner-link" href="login.html">Owner Access</a>
 </div>
@@ -157,108 +138,11 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const radioRef = db.collection("settings").doc("radio");
 
-let playlist = [];
-let currentIndex = 0;
-const audioPlayer = document.getElementById("radioPlayer");
-
-function getAudioType(url){
-const cleanUrl = url.split("?")[0].toLowerCase();
-if(cleanUrl.endsWith(".mp3")) return "audio/mpeg";
-if(cleanUrl.endsWith(".m4a")) return "audio/mp4";
-if(cleanUrl.endsWith(".aac")) return "audio/aac";
-if(cleanUrl.endsWith(".wav")) return "audio/wav";
-if(cleanUrl.endsWith(".ogg")) return "audio/ogg";
-return "";
-}
-
-function setAudioSource(url){
-audioPlayer.innerHTML = "";
-if(!url){return;}
-const source = document.createElement("source");
-source.src = url;
-const type = getAudioType(url);
-if(type){source.type = type;}
-audioPlayer.appendChild(source);
-audioPlayer.load();
-}
-
-function loadSong(index){
-if(playlist.length === 0){
-document.getElementById("playlistNote").innerText = "No approved AI songs loaded yet.";
-return;
-}
-
-const song = playlist[index];
-
-document.getElementById("songTitle").innerText = song.songTitle || "WH2 AI Radio";
-document.getElementById("artistName").innerText = song.creatorName || song.artistName || "AI Creator";
-document.getElementById("coverArt").src = song.coverSrc || "wh2-icon.png";
-document.getElementById("genreTag").innerText = song.genre || "AI Music";
-
-setAudioSource(song.audioSrc || "");
-
-document.getElementById("playlistNote").innerText =
-"Playing " + (index + 1) + " of " + playlist.length + " approved AI songs.";
-}
-
-audioPlayer.addEventListener("ended", function(){
-if(playlist.length > 0){
-currentIndex = (currentIndex + 1) % playlist.length;
-loadSong(currentIndex);
-audioPlayer.play();
-}
-});
-
-audioPlayer.addEventListener("error", function(){
-document.getElementById("playlistNote").innerText =
-"Audio could not load. Use a public direct audio link ending in .mp3, .m4a, .wav, .aac, or .ogg.";
-});
-
-db.collection("approvedSongs").orderBy("addedAt","desc").onSnapshot(function(snapshot){
-playlist = [];
-snapshot.forEach(function(doc){
-playlist.push(doc.data());
-});
-
-if(playlist.length > 0){
-if(currentIndex >= playlist.length){currentIndex = 0;}
-loadSong(currentIndex);
-}else{
-document.getElementById("songTitle").innerText = "WH2 AI Radio";
-document.getElementById("artistName").innerText = "AI Creator";
-document.getElementById("coverArt").src = "wh2-icon.png";
-document.getElementById("genreTag").innerText = "AI Music";
-document.getElementById("playlistNote").innerText = "No approved AI songs loaded yet.";
-}
-});
-
 radioRef.onSnapshot(function(doc){
 if(doc.exists){
 const data = doc.data();
-
 document.getElementById("stationMessage").innerText =
-data.stationMessage || "Welcome to WH2 AI Radio. Supporting AI-generated music, digital creators, and new sounds.";
-
-if(data.isLive === true){
-document.getElementById("playerCard").style.display = "block";
-document.getElementById("offlineBox").style.display = "none";
-}else{
-document.getElementById("playerCard").style.display = "none";
-document.getElementById("offlineBox").style.display = "block";
-audioPlayer.pause();
-}
-
-document.getElementById("featuredArtistName").innerText =
-data.featuredArtistName || "Featured AI Creator";
-
-document.getElementById("featuredArtistBio").innerText =
-data.featuredArtistBio || "AI creator spotlight coming soon.";
-
-document.getElementById("featuredImage").src =
-data.featuredArtistImage || "wh2-icon.png";
-
-document.getElementById("featuredArtistLink").href =
-data.featuredArtistLink || "#";
+data.stationMessage || "Welcome to WH2 Radio — AI sounds, independent creators, and human-approved music.";
 }
 });
 
@@ -286,11 +170,12 @@ document.getElementById("commentInput").value = "";
 });
 }
 
-db.collection("communityComments").orderBy("createdAt","desc").limit(3)
+db.collection("communityComments").orderBy("createdAt","desc").limit(5)
 .onSnapshot(function(snapshot){
 const box = document.getElementById("homeComments");
+
 if(snapshot.empty){
-box.innerHTML = "<p style='color:#999;'>No community messages yet.</p>";
+box.innerHTML = "<p>No messages yet. Be the first to join the conversation.</p>";
 return;
 }
 
