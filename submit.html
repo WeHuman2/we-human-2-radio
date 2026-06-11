@@ -10,15 +10,17 @@
 
 <style>
 body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
-.container{width:90%;max-width:650px;margin:40px auto;background:#111;border:1px solid red;border-radius:25px;padding:30px;}
+.container{width:90%;max-width:700px;margin:40px auto;background:#111;border:1px solid red;border-radius:25px;padding:30px;}
 .logo{text-align:center;font-size:58px;font-weight:900;text-shadow:0 0 18px red;}
 .logo span{color:red;}
 h1{text-align:center;color:red;}
-p{color:#ccc;line-height:1.5;}
+h2{color:red;}
+p,li{color:#ccc;line-height:1.5;}
 input,textarea,select{width:95%;padding:14px;margin:10px 0;background:#000;color:white;border:1px solid red;border-radius:12px;font-size:15px;}
 button{width:100%;padding:15px;margin-top:15px;background:red;color:white;border:none;border-radius:50px;font-weight:bold;font-size:16px;}
 label{display:block;color:#ccc;font-size:14px;line-height:1.5;margin-top:15px;}
 .message{margin-top:15px;color:#ff7777;text-align:center;}
+.notice{background:#000;border:1px solid rgba(255,0,0,.6);border-radius:18px;padding:18px;margin:20px 0;}
 a{color:red;}
 </style>
 </head>
@@ -32,6 +34,25 @@ a{color:red;}
 <h1>Submit Music to WH2 Radio</h1>
 
 <p>Artists can submit music for WH2 Radio review. Submission does not guarantee approval, streaming, playlist placement, or promotion.</p>
+
+<div class="notice">
+<h2>Before You Submit</h2>
+
+<p><strong>Music Link Requirements:</strong></p>
+<ul>
+<li>Use a public audio link from Google Drive, Dropbox, OneDrive, SoundCloud, or a direct audio file link.</li>
+<li>Accepted audio formats: MP3, M4A, WAV, AAC, OGG.</li>
+<li>Do not submit Apple Music, Spotify, YouTube Music, or phone file links.</li>
+<li>Do not submit links that start with file:/// because those only work on your personal phone.</li>
+</ul>
+
+<p><strong>Cover Art Requirements:</strong></p>
+<ul>
+<li>Use a public image link from Google Drive, Dropbox, Imgur, website upload, or another public image host.</li>
+<li>Accepted image formats: JPG, JPEG, PNG, WEBP, GIF, SVG.</li>
+<li>Do not submit a photo link that only exists inside your phone messages, camera roll, or private files.</li>
+</ul>
+</div>
 
 <input id="artistName" type="text" placeholder="Artist Name">
 <input id="songTitle" type="text" placeholder="Song Title">
@@ -55,8 +76,8 @@ a{color:red;}
 </select>
 
 <input id="email" type="email" placeholder="Contact Email">
-<input id="musicLink" type="text" placeholder="Music Link: Google Drive, Dropbox, SoundCloud, YouTube, etc.">
-<input id="coverLink" type="text" placeholder="Cover Art Link optional">
+<input id="musicLink" type="text" placeholder="Public Audio Link">
+<input id="coverLink" type="text" placeholder="Public Cover Art Link optional">
 
 <textarea id="notes" rows="4" placeholder="Notes, clean/explicit, social links, or anything Troy should know"></textarea>
 
@@ -108,7 +129,19 @@ const messageBox = document.getElementById("messageBox");
 
 if(!artistName || !songTitle || !genre || !email || !musicLink){
 messageBox.style.color = "#ff7777";
-messageBox.innerText = "Please complete artist name, song title, genre, email, and music link.";
+messageBox.innerText = "Please complete artist name, song title, genre, email, and public audio link.";
+return;
+}
+
+if(musicLink.startsWith("file:///")){
+messageBox.style.color = "#ff7777";
+messageBox.innerText = "Phone file links are not accepted. Please use a public audio link.";
+return;
+}
+
+if(coverLink.startsWith("file:///")){
+messageBox.style.color = "#ff7777";
+messageBox.innerText = "Phone file links are not accepted for cover art. Please use a public image link.";
 return;
 }
 
