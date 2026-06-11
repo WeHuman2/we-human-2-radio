@@ -3,202 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WH2 Radio</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ff0000">
-<link rel="apple-touch-icon" href="wh2-icon.png">
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<title>AURA Radio</title>
 
 <style>
-body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;text-align:center;}
-.header{padding:38px 20px 26px;background:linear-gradient(to bottom,#2b0000,#000);border-bottom:1px solid red;}
-.logo{font-size:64px;font-weight:900;text-shadow:0 0 15px red;}
-.logo span{color:red;}
-.tagline{font-size:20px;margin-top:10px;color:#ccc;}
+body{
+margin:0;
+background:#000;
+color:white;
+font-family:Arial,sans-serif;
+text-align:center;
+}
 
-.banner{width:100%;overflow:hidden;background:red;color:white;font-weight:bold;padding:10px 0;white-space:nowrap;}
-.scroll{display:inline-block;padding-left:100%;animation:scrollText 18s linear infinite;}
-@keyframes scrollText{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
+.header{
+padding:50px 20px;
+background:linear-gradient(to bottom,#1b0033,#000);
+border-bottom:1px solid #8a2be2;
+}
 
-.card{width:90%;max-width:760px;margin:28px auto;padding:22px;background:#111;border:1px solid red;border-radius:22px;box-shadow:0 0 22px rgba(255,0,0,.25);}
-.badge{display:inline-block;padding:8px 16px;border-radius:50px;background:red;font-size:13px;font-weight:bold;margin-bottom:16px;}
-h2{margin:10px 0;color:white;}
-p{color:#ccc;line-height:1.5;}
-.button{display:inline-block;margin-top:14px;padding:13px 24px;background:red;color:white;text-decoration:none;border-radius:50px;font-weight:bold;border:none;cursor:pointer;}
+.logo{
+font-size:72px;
+font-weight:900;
+letter-spacing:3px;
+text-shadow:0 0 20px #8a2be2;
+}
 
-.radio-box{background:#050505;border:1px dashed red;border-radius:18px;padding:20px;color:#ccc;}
-.radio-box strong{color:red;}
+.tagline{
+font-size:20px;
+color:#ccc;
+margin-top:10px;
+}
 
-.comment{border-top:1px solid rgba(255,0,0,.45);padding:12px 0;text-align:left;}
-.comment-name{color:red;font-weight:bold;}
-.comment-text{color:#ddd;margin-top:4px;}
+.card{
+width:90%;
+max-width:700px;
+margin:30px auto;
+padding:25px;
+background:#111;
+border:1px solid #8a2be2;
+border-radius:22px;
+box-shadow:0 0 25px rgba(138,43,226,.25);
+}
 
-input,textarea{width:92%;padding:12px;margin-top:10px;background:#000;color:white;border:1px solid red;border-radius:12px;}
+.badge{
+display:inline-block;
+background:#8a2be2;
+padding:8px 16px;
+border-radius:50px;
+font-size:13px;
+font-weight:bold;
+margin-bottom:15px;
+}
 
-.submit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:18px;}
-.submit-box{background:#050505;border:1px solid rgba(255,0,0,.6);border-radius:18px;padding:18px;}
+h2{
+margin:10px 0;
+}
 
-.install-mini{font-size:13px;text-align:left;color:#ccc;line-height:1.4;}
-.install-mini strong{color:red;}
+p{
+color:#ccc;
+line-height:1.5;
+}
 
-.footer{padding:30px;color:#777;font-size:13px;}
-.footer a{color:#aaa;text-decoration:none;margin:0 6px;}
-.owner-link{font-size:11px;color:#222!important;}
+.button{
+display:inline-block;
+margin-top:15px;
+padding:14px 26px;
+background:#8a2be2;
+color:white;
+text-decoration:none;
+border-radius:50px;
+font-weight:bold;
+}
+
+.player-placeholder{
+background:#050505;
+border:1px dashed #8a2be2;
+border-radius:18px;
+padding:28px;
+color:#ccc;
+}
+
+.footer{
+padding:30px;
+color:#777;
+font-size:13px;
+}
+
+.owner-link{
+color:#222;
+font-size:11px;
+text-decoration:none;
+}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-<div class="logo">WH<span>2</span></div>
-<div class="tagline">AI Curated. Human Approved.</div>
+<div class="logo">AURA</div>
+<div class="tagline">AI Universal Radio Alliance</div>
+<p>AI-assisted music. Human approved. Radio-first discovery.</p>
 </div>
 
-<div class="banner">
-<div class="scroll" id="stationMessage">
-Welcome to WH2 Radio — AI sounds, independent creators, and human-approved music.
+<div class="card">
+<div class="badge">LIVE RADIO</div>
+<h2>AURA Radio Player</h2>
+<div class="player-placeholder">
+Live365 player will be connected here.
 </div>
 </div>
 
 <div class="card">
-<div class="badge">WH2 RADIO PLAYER</div>
-<h2>Listen Live</h2>
-<div class="radio-box" id="live365Box">
-<strong>Live365 player will go here.</strong><br>
-Once the Live365 station link or embed code is ready, this section becomes the official WH2 radio player.
-</div>
+<div class="badge">NOW PLAYING</div>
+<h2>Current Track</h2>
+<p>Song title, artist name, genre, and cover art will appear here once the radio system is connected.</p>
 </div>
 
 <div class="card">
-<div class="badge">THE CONVERSATION</div>
-<h2>What Listeners Are Saying</h2>
-<div id="homeComments">Loading conversation...</div>
-
-<h2>Join the Conversation</h2>
-<p>Leave a shoutout, show love, or support the music playing on WH2.</p>
-<input id="nameInput" type="text" placeholder="Your Name">
-<textarea id="commentInput" rows="3" placeholder="Write your message"></textarea>
-<button class="button" onclick="postComment()">POST MESSAGE</button>
-<p id="commentStatus" style="font-size:13px;"></p>
+<div class="badge">SUBMISSIONS</div>
+<h2>Submit AI-Assisted Music</h2>
+<p>Creators can submit AI-assisted or AI-generated music for review by the AURA team.</p>
+<a class="button" href="submit.html">SUBMIT MUSIC</a>
 </div>
 
 <div class="card">
-<div class="badge">SUBMIT MUSIC</div>
-<h2>Submit to WH2 Radio</h2>
-<p>WH2 accepts both AI-generated music and independent human-created music for review.</p>
-
-<div class="submit-grid">
-<div class="submit-box">
-<h2>AI Music</h2>
-<p>Submit AI-generated songs, AI-assisted tracks, AI creator info, tool used, genre, and cover art.</p>
-<a class="button" href="submit.html">SUBMIT AI MUSIC</a>
-</div>
-
-<div class="submit-box">
-<h2>Human Music</h2>
-<p>Independent artists can submit original songs, artist info, genre, cover art, and music links for review.</p>
-<a class="button" href="submit-human.html">SUBMIT HUMAN MUSIC</a>
-</div>
-</div>
-</div>
-
-<div class="card">
-<div class="badge">INSTALL WH2</div>
-<h2>Add WH2 to Your Phone</h2>
-<div class="install-mini">
-<p><strong>Android:</strong> Open in Chrome → tap three dots → Add to Home Screen or Install App.</p>
-<p><strong>iPhone:</strong> Open in Safari → tap Share → Add to Home Screen → Add.</p>
-</div>
+<div class="badge">FEATURED CREATOR</div>
+<h2>Featured Artist Coming Soon</h2>
+<p>AURA will spotlight approved creators and tracks selected by the station team.</p>
 </div>
 
 <div class="footer">
-WH2 Radio © 2026<br><br>
-<a href="terms.html">Terms</a>
-<a href="privacy.html">Privacy</a>
-<a href="copyright.html">Copyright</a>
-<a href="submission.html">Music Submission</a>
-<br><br>
+AURA Radio © 2026<br><br>
 <a class="owner-link" href="login.html">Owner Access</a>
 </div>
-
-<script>
-const firebaseConfig = {
-apiKey: "AIzaSyDDpYf4GtbcIZ0OBu13qYqFqUt6H0s1C24",
-authDomain: "wh2-radio.firebaseapp.com",
-projectId: "wh2-radio",
-storageBucket: "wh2-radio.firebasestorage.app",
-messagingSenderId: "172232120211",
-appId: "1:172232120211:web:69a549acd85f286c5f3a66"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const radioRef = db.collection("settings").doc("radio");
-
-radioRef.onSnapshot(function(doc){
-if(doc.exists){
-const data = doc.data();
-document.getElementById("stationMessage").innerText =
-data.stationMessage || "Welcome to WH2 Radio — AI sounds, independent creators, and human-approved music.";
-}
-});
-
-function postComment(){
-const name = document.getElementById("nameInput").value.trim();
-const comment = document.getElementById("commentInput").value.trim();
-const status = document.getElementById("commentStatus");
-
-if(!name || !comment){
-status.style.color = "#ff7777";
-status.innerText = "Please enter your name and message.";
-return;
-}
-
-db.collection("communityComments").add({
-name:name,
-comment:comment,
-status:"Visible",
-createdAt:firebase.firestore.FieldValue.serverTimestamp()
-}).then(function(){
-status.style.color = "#66ff99";
-status.innerText = "Message posted.";
-document.getElementById("nameInput").value = "";
-document.getElementById("commentInput").value = "";
-});
-}
-
-db.collection("communityComments").orderBy("createdAt","desc").limit(5)
-.onSnapshot(function(snapshot){
-const box = document.getElementById("homeComments");
-
-if(snapshot.empty){
-box.innerHTML = "<p>No messages yet. Be the first to join the conversation.</p>";
-return;
-}
-
-box.innerHTML = "";
-
-snapshot.forEach(function(doc){
-const data = doc.data();
-if(data.status !== "Visible"){return;}
-
-const div = document.createElement("div");
-div.className = "comment";
-div.innerHTML =
-"<div class='comment-name'>" + (data.name || "Listener") + "</div>" +
-"<div class='comment-text'>" + (data.comment || "") + "</div>";
-
-box.appendChild(div);
-});
-});
-
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("service-worker.js");
-}
-</script>
 
 </body>
 </html>
