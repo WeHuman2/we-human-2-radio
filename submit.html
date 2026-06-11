@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submit Music to WH2 Radio</title>
+<title>Submit AI Music to WH2 Radio</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -31,67 +31,72 @@ a{color:red;}
 
 <div class="logo">WH<span>2</span></div>
 
-<h1>Submit Music to WH2 Radio</h1>
+<h1>Submit AI Music to WH2 Radio</h1>
 
-<p>Artists can submit music for WH2 Radio review. Submission does not guarantee approval, streaming, playlist placement, or promotion.</p>
+<p>WH2 Radio accepts AI-generated music submissions for review. Submission does not guarantee approval, airplay, playlist placement, promotion, or exposure.</p>
 
 <div class="notice">
 <h2>Before You Submit</h2>
 
-<p><strong>Music Link Requirements:</strong></p>
+<p><strong>WH2 Radio accepts AI-generated music only.</strong></p>
+
 <ul>
-<li>Use a public audio link from Google Drive, Dropbox, OneDrive, SoundCloud, or a direct audio file link.</li>
-<li>Accepted audio formats: MP3, M4A, WAV, AAC, OGG.</li>
+<li>Submit AI-created songs, AI-assisted tracks, or original AI music concepts only.</li>
 <li>Do not submit Apple Music, Spotify, YouTube Music, or phone file links.</li>
-<li>Do not submit links that start with file:/// because those only work on your personal phone.</li>
+<li>Do not submit copyrighted commercial songs.</li>
+<li>Do not submit unauthorized artist voices, cloned celebrity voices, stolen beats, copyrighted samples, or music you do not have permission to use.</li>
+<li>Audio link must be public and accessible.</li>
 </ul>
 
-<p><strong>Cover Art Requirements:</strong></p>
-<ul>
-<li>Use a public image link from Google Drive, Dropbox, Imgur, website upload, or another public image host.</li>
-<li>Accepted image formats: JPG, JPEG, PNG, WEBP, GIF, SVG.</li>
-<li>Do not submit a photo link that only exists inside your phone messages, camera roll, or private files.</li>
-</ul>
+<p><strong>Accepted audio formats:</strong> MP3, M4A, WAV, AAC, OGG.</p>
+<p><strong>Accepted cover formats:</strong> JPG, JPEG, PNG, WEBP, GIF, SVG.</p>
 </div>
 
-<input id="artistName" type="text" placeholder="Artist Name">
-<input id="songTitle" type="text" placeholder="Song Title">
+<input id="creatorName" type="text" placeholder="AI Creator / Producer Name">
+<input id="songTitle" type="text" placeholder="AI Song Title">
 
 <select id="genreInput">
 <option value="">Select Genre</option>
-<option>Hip-Hop</option>
-<option>R&B</option>
-<option>Pop</option>
-<option>Gospel</option>
-<option>Country</option>
-<option>Jazz</option>
-<option>Afrobeats</option>
-<option>Indie</option>
-<option>Rock</option>
-<option>Alternative</option>
-<option>Reggae</option>
-<option>Dancehall</option>
-<option>Latin</option>
+<option>AI Hip-Hop</option>
+<option>AI R&B</option>
+<option>AI Pop</option>
+<option>AI Gospel</option>
+<option>AI Country</option>
+<option>AI Jazz</option>
+<option>AI Afrobeats</option>
+<option>AI Indie</option>
+<option>AI Rock</option>
+<option>AI Alternative</option>
+<option>AI Reggae</option>
+<option>AI Dancehall</option>
+<option>AI Latin</option>
+<option>AI Experimental</option>
 <option>Other</option>
 </select>
 
+<input id="aiTool" type="text" placeholder="AI Tool Used: Suno, Udio, Soundraw, Boomy, etc.">
 <input id="email" type="email" placeholder="Contact Email">
-<input id="musicLink" type="text" placeholder="Public Audio Link">
+<input id="musicLink" type="text" placeholder="Public AI Audio Link">
 <input id="coverLink" type="text" placeholder="Public Cover Art Link optional">
 
-<textarea id="notes" rows="4" placeholder="Notes, clean/explicit, social links, or anything Troy should know"></textarea>
+<textarea id="notes" rows="4" placeholder="Notes, clean/explicit, theme, social links, or anything WH2 should know"></textarea>
 
 <label>
-<input id="permission" type="checkbox">
-I confirm that I own this music or have legal permission to submit it to WH2 Radio for review.
+<input id="aiConfirm" type="checkbox">
+I confirm this is AI-generated or AI-assisted music and I have the right to submit it.
+</label>
+
+<label>
+<input id="rightsConfirm" type="checkbox">
+I confirm this submission does not contain unauthorized copyrighted music, stolen beats, unauthorized samples, or cloned voices I do not have permission to use.
 </label>
 
 <label>
 <input id="agreement" type="checkbox">
-I understand that submitting music does not guarantee acceptance, airplay, promotion, playlist placement, or exposure.
+I understand that submission does not guarantee acceptance, airplay, promotion, playlist placement, or exposure.
 </label>
 
-<button onclick="submitMusic()">SUBMIT MUSIC</button>
+<button onclick="submitMusic()">SUBMIT AI MUSIC</button>
 
 <div class="message" id="messageBox"></div>
 
@@ -116,20 +121,22 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 function submitMusic(){
-const artistName = document.getElementById("artistName").value.trim();
+const creatorName = document.getElementById("creatorName").value.trim();
 const songTitle = document.getElementById("songTitle").value.trim();
 const genre = document.getElementById("genreInput").value;
+const aiTool = document.getElementById("aiTool").value.trim();
 const email = document.getElementById("email").value.trim();
 const musicLink = document.getElementById("musicLink").value.trim();
 const coverLink = document.getElementById("coverLink").value.trim();
 const notes = document.getElementById("notes").value.trim();
-const permission = document.getElementById("permission").checked;
+const aiConfirm = document.getElementById("aiConfirm").checked;
+const rightsConfirm = document.getElementById("rightsConfirm").checked;
 const agreement = document.getElementById("agreement").checked;
 const messageBox = document.getElementById("messageBox");
 
-if(!artistName || !songTitle || !genre || !email || !musicLink){
+if(!creatorName || !songTitle || !genre || !aiTool || !email || !musicLink){
 messageBox.style.color = "#ff7777";
-messageBox.innerText = "Please complete artist name, song title, genre, email, and public audio link.";
+messageBox.innerText = "Please complete creator name, song title, genre, AI tool, email, and public audio link.";
 return;
 }
 
@@ -145,35 +152,41 @@ messageBox.innerText = "Phone file links are not accepted for cover art. Please 
 return;
 }
 
-if(!permission || !agreement){
+if(!aiConfirm || !rightsConfirm || !agreement){
 messageBox.style.color = "#ff7777";
-messageBox.innerText = "Please check both agreement boxes before submitting.";
+messageBox.innerText = "Please check all agreement boxes before submitting.";
 return;
 }
 
 db.collection("submissions").add({
-artistName: artistName,
+creatorName: creatorName,
+artistName: creatorName,
 songTitle: songTitle,
 genre: genre,
+aiTool: aiTool,
 email: email,
 musicLink: musicLink,
 coverLink: coverLink,
 notes: notes,
-permissionConfirmed: permission,
+aiGeneratedConfirmed: aiConfirm,
+rightsConfirmed: rightsConfirm,
 agreementConfirmed: agreement,
 status: "Pending Review",
+submissionType: "AI Music",
 submittedAt: firebase.firestore.FieldValue.serverTimestamp()
 }).then(function(){
 messageBox.style.color = "#66ff99";
-messageBox.innerText = "Submission received. WH2 Radio will review your music.";
-document.getElementById("artistName").value = "";
+messageBox.innerText = "AI music submission received. WH2 Radio will review it.";
+document.getElementById("creatorName").value = "";
 document.getElementById("songTitle").value = "";
 document.getElementById("genreInput").value = "";
+document.getElementById("aiTool").value = "";
 document.getElementById("email").value = "";
 document.getElementById("musicLink").value = "";
 document.getElementById("coverLink").value = "";
 document.getElementById("notes").value = "";
-document.getElementById("permission").checked = false;
+document.getElementById("aiConfirm").checked = false;
+document.getElementById("rightsConfirm").checked = false;
 document.getElementById("agreement").checked = false;
 }).catch(function(error){
 messageBox.style.color = "#ff7777";
