@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WH2 Review Submissions</title>
+<title>WH2 Submission Review</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -11,17 +11,19 @@
 
 <style>
 body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
-.header{text-align:center;padding:30px 20px;border-bottom:1px solid red;background:linear-gradient(to bottom,#2b0000,#000);}
-.logo{font-size:55px;font-weight:900;text-shadow:0 0 18px red;}
+.header{text-align:center;padding:30px 20px;background:linear-gradient(to bottom,#300000,#000);border-bottom:1px solid red;}
+.logo{font-size:70px;font-weight:900;text-shadow:0 0 22px red;}
 .logo span{color:red;}
+.subtitle{color:#ccc;margin-top:8px;}
 .container{width:92%;max-width:1000px;margin:30px auto;}
-.card{background:#111;border:1px solid red;border-radius:20px;padding:20px;margin-bottom:18px;}
-h1,h2{color:red;}
+.card{background:#111;border:1px solid red;border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 0 20px rgba(255,0,0,.2);}
+h2{color:red;margin-top:0;}
 p{color:#ccc;line-height:1.5;}
-button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;}
-a{color:red;}
-.loading{text-align:center;padding:50px;color:#ccc;}
+button{width:100%;padding:13px;margin-top:10px;background:red;color:white;border:none;border-radius:50px;font-weight:bold;}
+.reject{background:#555;}
+.loading{text-align:center;padding:60px 20px;color:#ccc;font-size:20px;}
 .status{color:#66ff99;font-weight:bold;}
+a{color:red;}
 </style>
 </head>
 
@@ -33,13 +35,12 @@ a{color:red;}
 
 <div class="header">
 <div class="logo">WH<span>2</span></div>
-<h1>Review Music Submissions</h1>
-<p>Owner-only submission review center.</p>
+<div class="subtitle">Submission Review Queue</div>
 </div>
 
 <div class="container">
 <button onclick="location.href='admin.html'">BACK TO DASHBOARD</button>
-<div id="submissionsList"></div>
+<div id="submissionsList">Loading submissions...</div>
 </div>
 
 </div>
@@ -58,44 +59,48 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 firebase.auth().onAuthStateChanged(function(user){
-if(user && user.email.toLowerCase() === "wehumanradio@gmail.com"){
-document.getElementById("loading").style.display = "none";
-document.getElementById("pageContent").style.display = "block";
+if(user && user.email.toLowerCase()==="wehumanradio@gmail.com"){
+document.getElementById("loading").style.display="none";
+document.getElementById("pageContent").style.display="block";
 loadSubmissions();
 }else{
-window.location.href = "login.html";
+window.location.href="login.html";
 }
 });
 
 function loadSubmissions(){
-const list = document.getElementById("submissionsList");
-list.innerHTML = "Loading submissions...";
+const list=document.getElementById("submissionsList");
+list.innerHTML="Loading submissions...";
 
-db.collection("submissions").orderBy("submittedAt","desc").get()
+db.collection("submissions").orderBy("createdAt","desc").get()
 .then(function(snapshot){
 if(snapshot.empty){
-list.innerHTML = "<p>No submissions yet.</p>";
+list.innerHTML="<p>No submissions yet.</p>";
 return;
 }
 
-list.innerHTML = "";
+list.innerHTML="";
 
 snapshot.forEach(function(doc){
-const data = doc.data();
+const data=doc.data();
 
-const card = document.createElement("div");
-card.className = "card";
+const card=document.createElement("div");
+card.className="card";
 
-card.innerHTML = `
+card.innerHTML=`
 <h2>${data.songTitle || "Untitled Song"}</h2>
-<p><strong>Artist:</strong> ${data.artistName || ""}</p>
+<p><strong>Artist / Creator:</strong> ${data.artistName || ""}</p>
 <p><strong>Email:</strong> ${data.email || ""}</p>
-<p><strong>Music Link:</strong> <a href="${data.musicLink || "#"}" target="_blank">Open Music</a></p>
-<p><strong>Cover Link:</strong> ${data.coverLink ? `<a href="${data.coverLink}" target="_blank">Open Cover</a>` : "None"}</p>
+<p><strong>Submission Type:</strong> ${data.submissionType || ""}</p>
+<p><strong>Genre:</strong> ${data.genre || ""}</p>
+<p><strong>AI Tool:</strong> ${data.aiTool || "Not provided"}</p>
+<p><strong>Artist Link:</strong> ${data.artistLink ? `<a href="${data.artistLink}" target="_blank">Open Artist Link</a>` : "Not provided"}</p>
+<p><strong>Song Link:</strong> ${data.songLink ? `<a href="${data.songLink}" target="_blank">Open Song Link</a>` : "Not provided"}</p>
+<p><strong>Cover Link:</strong> ${data.coverLink ? `<a href="${data.coverLink}" target="_blank">Open Cover Link</a>` : "Not provided"}</p>
 <p><strong>Notes:</strong> ${data.notes || "None"}</p>
 <p><strong>Status:</strong> <span class="status">${data.status || "Pending Review"}</span></p>
-<button onclick="updateStatus('${doc.id}','Approved')">APPROVE</button>
-<button onclick="updateStatus('${doc.id}','Rejected')">REJECT</button>
+<button onclick="approveSubmission('${doc.id}')">APPROVE + ADD TO LIBRARY</button>
+<button class="reject" onclick="rejectSubmission('${doc.id}')">REJECT SUBMISSION</button>
 `;
 
 list.appendChild(card);
@@ -103,9 +108,41 @@ list.appendChild(card);
 });
 }
 
-function updateStatus(id,status){
+function approveSubmission(id){
+db.collection("submissions").doc(id).get()
+.then(function(doc){
+if(doc.exists){
+const data=doc.data();
+
+db.collection("approvedSongs").add({
+artistName:data.artistName || "",
+creatorName:data.artistName || "",
+email:data.email || "",
+songTitle:data.songTitle || "",
+submissionType:data.submissionType || "",
+genre:data.genre || "",
+aiTool:data.aiTool || "",
+artistLink:data.artistLink || "",
+songLink:data.songLink || "",
+coverLink:data.coverLink || "",
+notes:data.notes || "",
+status:"Approved",
+sourceSubmissionId:id,
+addedAt:firebase.firestore.FieldValue.serverTimestamp()
+}).then(function(){
 db.collection("submissions").doc(id).update({
-status: status
+status:"Approved - Added to Library"
+}).then(function(){
+loadSubmissions();
+});
+});
+}
+});
+}
+
+function rejectSubmission(id){
+db.collection("submissions").doc(id).update({
+status:"Rejected"
 }).then(function(){
 loadSubmissions();
 });
