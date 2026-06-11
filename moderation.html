@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WH2 Community Moderation</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
+.header{text-align:center;padding:30px 20px;border-bottom:1px solid red;background:linear-gradient(to bottom,#2b0000,#000);}
+.logo{font-size:55px;font-weight:900;text-shadow:0 0 18px red;}
+.logo span{color:red;}
+.container{width:92%;max-width:1000px;margin:30px auto;}
+.card{background:#111;border:1px solid red;border-radius:20px;padding:20px;margin-bottom:18px;}
+h1,h2{color:red;}
+p{color:#ccc;line-height:1.5;}
+button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:50px;background:red;color:white;font-weight:bold;}
+.hide{background:#555;}
+.delete{background:#7a0000;}
+.loading{text-align:center;padding:50px;color:#ccc;}
+.status{color:#66ff99;font-weight:bold;}
+a{color:red;}
+</style>
+</head>
+
+<body>
+
+<div id="loading" class="loading">Checking owner access...</div>
+
+<div id="pageContent" style="display:none;">
+
+<div class="header">
+<div class="logo">WH<span>2</span></div>
+<h1>Community Moderation</h1>
+<p>Owner-only comment review area.</p>
+</div>
+
+<div class="container">
+<button onclick="location.href='admin.html'">BACK TO DASHBOARD</button>
+<div id="commentsList">Loading comments...</div>
+</div>
+
+</div>
+
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyDDpYf4GtbcIZ0OBu13qYqFqUt6H0s1C24",
+authDomain: "wh2-radio.firebaseapp.com",
+projectId: "wh2-radio",
+storageBucket: "wh2-radio.firebasestorage.app",
+messagingSenderId: "172232120211",
+appId: "1:172232120211:web:69a549acd85f286c5f3a66"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+firebase.auth().onAuthStateChanged(function(user){
+if(user && user.email.toLowerCase() === "wehumanradio@gmail.com"){
+document.getElementById("loading").style.display = "none";
+document.getElementById("pageContent").style.display = "block";
+loadComments();
+}else{
+window.location.href = "login.html";
+}
+});
+
+function loadComments(){
+const list = document.getElementById("commentsList");
+list.innerHTML = "Loading comments...";
+
+db.collection("communityComments").orderBy("createdAt","desc").get()
+.then(function(snapshot){
+if(snapshot.empty){
+list.innerHTML = "<p>No community comments yet.</p>";
+return;
+}
+
+list.innerHTML = "";
+
+snapshot.forEach(function(doc){
+const data = doc.data();
+
+const card = document.createElement("div");
+card.className = "card";
+
+card.innerHTML = `
+<h2>${data.name || "Listener"}</h2>
+<p>${data.comment || ""}</p>
+<p><strong>Status:</strong> <span class="status">${data.status || "Visible"}</span></p>
+<button onclick="showComment('${doc.id}')">SHOW COMMENT</button>
+<button class="hide" onclick="hideComment('${doc.id}')">HIDE COMMENT</button>
+<button class="delete" onclick="deleteComment('${doc.id}')">DELETE COMMENT</button>
+`;
+
+list.appendChild(card);
+});
+});
+}
+
+function showComment(id){
+db.collection("communityComments").doc(id).update({
+status:"Visible"
+}).then(function(){
+loadComments();
+});
+}
+
+function hideComment(id){
+db.collection("communityComments").doc(id).update({
+status:"Hidden"
+}).then(function(){
+loadComments();
+});
+}
+
+function deleteComment(id){
+if(confirm("Delete this comment permanently?")){
+db.collection("communityComments").doc(id).delete()
+.then(function(){
+loadComments();
+});
+}
+}
+</script>
+
+</body>
+</html>
