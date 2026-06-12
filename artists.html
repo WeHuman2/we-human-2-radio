@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WH2 Artist Database</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
+.header{text-align:center;padding:30px 20px;background:linear-gradient(to bottom,#300000,#000);border-bottom:1px solid red;}
+.logo{font-size:70px;font-weight:900;text-shadow:0 0 22px red;}
+.logo span{color:red;}
+.subtitle{color:#ccc;margin-top:8px;}
+.container{width:92%;max-width:1000px;margin:30px auto;}
+.card{background:#111;border:1px solid red;border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 0 20px rgba(255,0,0,.2);}
+h2{color:red;margin-top:0;}
+p{color:#ccc;line-height:1.5;}
+button{width:100%;padding:13px;margin-top:10px;background:red;color:white;border:none;border-radius:50px;font-weight:bold;}
+.loading{text-align:center;padding:60px 20px;color:#ccc;font-size:20px;}
+a{color:red;}
+.stat{display:inline-block;background:#220000;border:1px solid red;border-radius:50px;padding:7px 13px;margin:4px;color:#fff;font-size:13px;}
+</style>
+</head>
+
+<body>
+
+<div id="loading" class="loading">Checking owner access...</div>
+
+<div id="pageContent" style="display:none;">
+
+<div class="header">
+<div class="logo">WH<span>2</span></div>
+<div class="subtitle">Artist & Creator Database</div>
+</div>
+
+<div class="container">
+<button onclick="location.href='admin.html'">BACK TO DASHBOARD</button>
+<div id="artistsList">Loading artists...</div>
+</div>
+
+</div>
+
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyDDpYf4GtbcIZ0OBu13qYqFqUt6H0s1C24",
+authDomain: "wh2-radio.firebaseapp.com",
+projectId: "wh2-radio",
+storageBucket: "wh2-radio.firebasestorage.app",
+messagingSenderId: "172232120211",
+appId: "1:172232120211:web:69a549acd85f286c5f3a66"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+firebase.auth().onAuthStateChanged(function(user){
+if(user && user.email.toLowerCase()==="wehumanradio@gmail.com"){
+document.getElementById("loading").style.display="none";
+document.getElementById("pageContent").style.display="block";
+loadArtists();
+}else{
+window.location.href="login.html";
+}
+});
+
+function loadArtists(){
+const list=document.getElementById("artistsList");
+list.innerHTML="Loading artists...";
+
+db.collection("approvedSongs").orderBy("addedAt","desc").get()
+.then(function(snapshot){
+if(snapshot.empty){
+list.innerHTML="<p>No approved artists yet. Artists will appear after songs are approved into the WH2 Music Library.</p>";
+return;
+}
+
+const artistMap={};
+
+snapshot.forEach(function(doc){
+const data=doc.data();
+const name=data.artistName || data.creatorName || "Unknown Artist";
+
+if(!artistMap[name]){
+artistMap[name]={
+name:name,
+email:data.email || "",
+genres:new Set(),
+types:new Set(),
+songs:[],
+artistLink:data.artistLink || "",
+coverLink:data.coverLink || ""
+};
+}
+
+if(data.genre){artistMap[name].genres.add(data.genre);}
+if(data.submissionType){artistMap[name].types.add(data.submissionType);}
+if(data.artistLink && !artistMap[name].artistLink){artistMap[name].artistLink=data.artistLink;}
+if(data.coverLink && !artistMap[name].coverLink){artistMap[name].coverLink=data.coverLink;}
+
+artistMap[name].songs.push(data.songTitle || "Untitled Song");
+});
+
+list.innerHTML="";
+
+Object.keys(artistMap).sort().forEach(function(name){
+const artist=artistMap[name];
+
+const card=document.createElement("div");
+card.className="card";
+
+let songsHtml="";
+artist.songs.forEach(function(song){
+songsHtml += "<li>" + song + "</li>";
+});
+
+let genresHtml="";
+artist.genres.forEach(function(genre){
+genresHtml += "<span class='stat'>" + genre + "</span>";
+});
+
+let typesHtml="";
+artist.types.forEach(function(type){
+typesHtml += "<span class='stat'>" + type + "</span>";
+});
+
+card.innerHTML=`
+<h2>${artist.name}</h2>
+<p><strong>Email:</strong> ${artist.email || "Not provided"}</p>
+<p><strong>Total Approved Songs:</strong> ${artist.songs.length}</p>
+<p><strong>Genres:</strong><br>${genresHtml || "Not provided"}</p>
+<p><strong>Submission Types:</strong><br>${typesHtml || "Not provided"}</p>
+<p><strong>Artist Link:</strong> ${artist.artistLink ? `<a href="${artist.artistLink}" target="_blank">Open Artist Link</a>` : "Not provided"}</p>
+<p><strong>Approved Songs:</strong></p>
+<ul>${songsHtml}</ul>
+<button onclick="setFeaturedArtist('${artist.name.replace(/'/g,"\\'")}')">SET AS FEATURED CREATOR</button>
+`;
+
+list.appendChild(card);
+});
+});
+}
+
+function setFeaturedArtist(artistName){
+db.collection("approvedSongs").where("artistName","==",artistName).limit(1).get()
+.then(function(snapshot){
+if(snapshot.empty){
+db.collection("approvedSongs").where("creatorName","==",artistName).limit(1).get()
+.then(function(secondSnapshot){
+if(!secondSnapshot.empty){
+saveFeaturedFromDoc(secondSnapshot.docs[0]);
+}
+});
+}else{
+saveFeaturedFromDoc(snapshot.docs[0]);
+}
+});
+}
+
+function saveFeaturedFromDoc(doc){
+const data=doc.data();
+
+db.collection("settings").doc("radio").set({
+featuredName:data.artistName || data.creatorName || "",
+featuredBio:(data.genre || "WH2 creator") + " • " + (data.submissionType || "Approved Music"),
+featuredImage:data.coverLink || "",
+featuredLink:data.artistLink || data.songLink || ""
+},{merge:true}).then(function(){
+alert("Featured creator updated.");
+});
+}
+</script>
+
+</body>
+</html>
