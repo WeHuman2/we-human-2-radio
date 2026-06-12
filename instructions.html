@@ -3,80 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WH2 Operations Manual</title>
+<title>WH2 Owner Operations Manual</title>
 
 <style>
-body{
-margin:0;
-background:#000;
-color:white;
-font-family:Arial,sans-serif;
-}
-
-.header{
-text-align:center;
-padding:40px 20px;
-background:linear-gradient(to bottom,#400000,#000);
-border-bottom:1px solid red;
-}
-
-.logo{
-font-size:80px;
-font-weight:900;
-text-shadow:0 0 20px red;
-}
-
-.logo span{
-color:red;
-}
-
-.subtitle{
-color:#ccc;
-margin-top:10px;
-font-size:18px;
-}
-
-.container{
-width:92%;
-max-width:1000px;
-margin:30px auto;
-}
-
-.section{
-background:#111;
-border:1px solid red;
-border-radius:20px;
-padding:25px;
-margin-bottom:20px;
-}
-
-h2{
-color:red;
-margin-top:0;
-}
-
-p,li{
-color:#ccc;
-line-height:1.7;
-}
-
-ul{
-padding-left:20px;
-}
-
-.warning{
-background:#220000;
-border:1px solid red;
-border-radius:15px;
-padding:15px;
-margin-top:15px;
-}
-
-.footer{
-text-align:center;
-padding:30px;
-color:#666;
-}
+body{margin:0;background:#000;color:white;font-family:Arial,sans-serif;}
+.header{text-align:center;padding:40px 20px;background:linear-gradient(to bottom,#400000,#000);border-bottom:1px solid red;}
+.logo{font-size:82px;font-weight:900;text-shadow:0 0 22px red;}
+.logo span{color:red;}
+.subtitle{color:#ccc;font-size:18px;margin-top:10px;}
+.container{width:92%;max-width:1050px;margin:30px auto;}
+.section{background:#111;border:1px solid red;border-radius:22px;padding:25px;margin-bottom:22px;box-shadow:0 0 20px rgba(255,0,0,.18);}
+h1,h2,h3{color:red;}
+p,li{color:#ccc;line-height:1.65;}
+code{background:#000;color:#ff7777;padding:3px 6px;border-radius:6px;}
+.warning{background:#220000;border:1px solid red;border-radius:15px;padding:15px;margin:15px 0;color:#fff;}
+.checklist li{margin-bottom:8px;}
+.footer{text-align:center;color:#666;padding:30px;}
 </style>
 </head>
 
@@ -84,201 +26,258 @@ color:#666;
 
 <div class="header">
 <div class="logo">WH<span>2</span></div>
-<div class="subtitle">
-We Human Too • Operations Manual • Version 1
-</div>
+<div class="subtitle">We Human Too Radio • Owner Operations Manual • Version 1</div>
 </div>
 
 <div class="container">
 
 <div class="section">
-<h2>System Overview</h2>
-
-<p>
-WH2 Radio is an AI-powered music discovery platform.
-</p>
-
-<p>
-The purpose of WH2 is to discover, organize, review, approve, and promote AI-assisted creators and independent artists through a radio-style listening experience.
-</p>
-
-<p>
-The WH2 system currently consists of:
-</p>
-
-<ul>
-<li>Public Homepage</li>
-<li>Music Submission Form</li>
-<li>Owner Login</li>
-<li>Owner Dashboard</li>
-<li>Submission Review Queue</li>
-<li>Music Library</li>
-<li>Artist Database</li>
-<li>Legal Pages</li>
-<li>Operations Manual</li>
-</ul>
-
+<h2>1. What WH2 Radio Is</h2>
+<p>WH2 Radio is a digital radio and music discovery system for AI-assisted creators and independent artists. The system allows creators to submit music, the owner/team to review submissions, approve music, organize the music library, manage artists, update station settings, and connect a Live365 radio player when ready.</p>
+<p>WH2 stands for <strong>We Human Too</strong>. The station message is: <strong>AI-powered music discovery. Human approved.</strong></p>
 </div>
 
 <div class="section">
+<h2>2. Main Tools Used</h2>
 
-<h2>Daily Operations</h2>
+<h3>GitHub</h3>
+<p>GitHub stores the website files. Every page on the WH2 site is a file inside the GitHub repository.</p>
+<ul>
+<li><code>index.html</code> = public homepage</li>
+<li><code>submit.html</code> = music submission form</li>
+<li><code>login.html</code> = owner login</li>
+<li><code>admin.html</code> = owner dashboard</li>
+<li><code>submissions.html</code> = review queue</li>
+<li><code>library.html</code> = approved music library</li>
+<li><code>artists.html</code> = artist database</li>
+<li><code>instructions.html</code> = this manual</li>
+<li><code>terms.html</code>, <code>privacy.html</code>, <code>copyright.html</code>, <code>submission.html</code> = legal pages</li>
+</ul>
 
+<h3>Firebase</h3>
+<p>Firebase controls login and stores data.</p>
+<ul>
+<li><strong>Authentication</strong> controls owner login.</li>
+<li><strong>Firestore Database</strong> stores submissions, approved songs, artist data, and station settings.</li>
+</ul>
+
+<h3>Live365</h3>
+<p>Live365 will be used for the actual radio player/stream when Troy provides the station link or embed code.</p>
+</div>
+
+<div class="section">
+<h2>3. Daily Operating Routine</h2>
+<ol class="checklist">
+<li>Open the public WH2 homepage and make sure it loads.</li>
+<li>Login through <code>login.html</code>.</li>
+<li>Open the owner dashboard.</li>
+<li>Check Music Submissions.</li>
+<li>Review new songs carefully.</li>
+<li>Approve songs that are acceptable.</li>
+<li>Reject songs that are incomplete, suspicious, copyrighted, or not ready.</li>
+<li>Open Music Library and confirm approved songs appeared there.</li>
+<li>Open Artist Database and confirm the artist appears there.</li>
+<li>Update Featured Creator if needed.</li>
+<li>Update Station Message if needed.</li>
+<li>Verify Live365 player is working once connected.</li>
+</ol>
+</div>
+
+<div class="section">
+<h2>4. How to Edit the Website in GitHub</h2>
 <ol>
-<li>Login to WH2 Owner Dashboard</li>
-<li>Review new music submissions</li>
-<li>Approve or reject submissions</li>
-<li>Verify approved songs appear in the library</li>
-<li>Verify artist records appear in the artist database</li>
-<li>Update featured creator if desired</li>
-<li>Update station message if needed</li>
-<li>Verify station status is ON</li>
+<li>Go to GitHub.</li>
+<li>Open the WH2 repository.</li>
+<li>Click the file you want to edit.</li>
+<li>Click the pencil icon.</li>
+<li>If replacing the full page, press <code>Ctrl + A</code> and delete everything.</li>
+<li>Paste the new full code.</li>
+<li>Scroll down to Commit Changes.</li>
+<li>Write a clear commit message like <code>Update WH2 homepage</code>.</li>
+<li>Click Commit Changes.</li>
+<li>Wait 1–3 minutes, then refresh the website.</li>
 </ol>
 
+<div class="warning">
+Do not randomly delete files. Do not rename files unless you know every button linking to that file has also been updated.
+</div>
 </div>
 
 <div class="section">
+<h2>5. What to Ask ChatGPT When Editing Code</h2>
+<p>If someone is using free ChatGPT or another AI tool, they need to give clear instructions and paste the current code when possible.</p>
 
-<h2>Music Review Process</h2>
+<h3>Best Prompt for Code Edits</h3>
+<p><code>I am editing a GitHub Pages website for WH2 Radio. I need a full fresh HTML code replacement for [file name]. Keep the Firebase config the same. Keep the WH2 red and black branding. Do not remove working features. Here is the current code: [paste code].</code></p>
 
-<ul>
-<li>Open Music Submissions</li>
-<li>Review song title</li>
-<li>Review artist information</li>
-<li>Review genre</li>
-<li>Review submission type</li>
-<li>Review AI tool information if provided</li>
-<li>Open song link</li>
-<li>Open cover art link</li>
-<li>Determine approval status</li>
-</ul>
+<h3>Best Prompt for Fixing Broken Buttons</h3>
+<p><code>This button is supposed to open [page name], but it does not work. Review the file names and give me the full corrected code.</code></p>
+
+<h3>Best Prompt for Adding Features</h3>
+<p><code>Add this feature without breaking the current system. Provide full code, exact file name, commit message, and testing steps.</code></p>
 
 <div class="warning">
-Never approve music that appears stolen, fraudulent, misleading, or copyrighted by someone else.
+Never ask AI to “just fix it” without telling it the file name, current problem, and what should happen.
 </div>
-
 </div>
 
 <div class="section">
+<h2>6. Submission Review Process</h2>
+<ol>
+<li>Go to the dashboard.</li>
+<li>Click <strong>Open Submissions</strong>.</li>
+<li>Review artist/creator name.</li>
+<li>Review email.</li>
+<li>Review song title.</li>
+<li>Review submission type.</li>
+<li>Review genre.</li>
+<li>Open song link if provided.</li>
+<li>Open cover link if provided.</li>
+<li>Read notes.</li>
+<li>Confirm checkboxes were completed.</li>
+<li>If acceptable, click <strong>Approve + Add to Library</strong>.</li>
+<li>If not acceptable, click <strong>Reject Submission</strong>.</li>
+</ol>
 
-<h2>Artist Approval Process</h2>
+<div class="warning">
+Do not approve copyrighted commercial songs, stolen beats, unauthorized samples, fake links, or anything that looks legally risky.
+</div>
+</div>
 
+<div class="section">
+<h2>7. Music Library Process</h2>
+<p>The Music Library stores approved songs only.</p>
+<ol>
+<li>Go to dashboard.</li>
+<li>Click <strong>Open Library</strong>.</li>
+<li>Confirm approved song appears.</li>
+<li>Review artist name, genre, links, and status.</li>
+<li>If a song should not remain approved, delete it from the library.</li>
+<li>If a creator should be highlighted, click <strong>Set as Featured Creator</strong>.</li>
+</ol>
+</div>
+
+<div class="section">
+<h2>8. Artist Database Process</h2>
+<p>The Artist Database is created from approved songs.</p>
+<ol>
+<li>Go to dashboard.</li>
+<li>Click <strong>Open Artists</strong>.</li>
+<li>Find the artist/creator.</li>
+<li>Review approved songs and genre tags.</li>
+<li>Use this page to see who is active inside WH2.</li>
+<li>Set featured creator from this page if needed.</li>
+</ol>
+</div>
+
+<div class="section">
+<h2>9. Featured Creator Process</h2>
+<ol>
+<li>Open dashboard.</li>
+<li>Find Featured Creator section.</li>
+<li>Enter creator name.</li>
+<li>Enter short bio.</li>
+<li>Add image link if available.</li>
+<li>Add creator/music/social link if available.</li>
+<li>Click Save Featured Creator.</li>
+<li>Open public site and confirm it looks correct.</li>
+</ol>
+</div>
+
+<div class="section">
+<h2>10. Station Message Process</h2>
+<ol>
+<li>Open dashboard.</li>
+<li>Find Station Message.</li>
+<li>Type the message for the public homepage.</li>
+<li>Click Save Message.</li>
+<li>Open homepage and verify the message changed.</li>
+</ol>
+<p>Good station message examples:</p>
 <ul>
-<li>Approve submission</li>
-<li>System sends approved song into Music Library</li>
-<li>Artist automatically appears in Artist Database</li>
-<li>Artist becomes eligible for Featured Creator status</li>
+<li>WH2 Radio highlights AI-powered music discovery and independent sound.</li>
+<li>Welcome to WH2 Radio — We Human Too.</li>
+<li>AI-powered music. Human approved.</li>
 </ul>
-
 </div>
 
 <div class="section">
+<h2>11. Live365 Process</h2>
+<p>Live365 is expected to handle the real radio streaming side.</p>
+<ol>
+<li>Get the Live365 station link or embed code.</li>
+<li>Login to WH2 dashboard.</li>
+<li>Paste Live365 info into the Live365 section.</li>
+<li>Click Save Live365 Info.</li>
+<li>Developer must connect that saved data to the homepage player area.</li>
+<li>Test on phone and computer.</li>
+</ol>
+</div>
 
-<h2>Featured Creator Process</h2>
+<div class="section">
+<h2>12. Copyright Complaint Process</h2>
+<ol>
+<li>Take complaint seriously.</li>
+<li>Write down who complained.</li>
+<li>Write down song title and artist name.</li>
+<li>Go to Music Library.</li>
+<li>Remove or hide the song while reviewing.</li>
+<li>Check submission details.</li>
+<li>Ask creator for proof of rights if needed.</li>
+<li>If rights cannot be confirmed, keep the song removed.</li>
+</ol>
+</div>
 
+<div class="section">
+<h2>13. Emergency Procedures</h2>
 <ul>
-<li>Open Artist Database</li>
-<li>Select approved creator</li>
-<li>Set creator as Featured Creator</li>
-<li>Verify featured creator displays correctly</li>
+<li><strong>Website not loading:</strong> Check GitHub Pages deployment.</li>
+<li><strong>Login not working:</strong> Check Firebase Authentication.</li>
+<li><strong>Submissions not saving:</strong> Check Firebase Firestore rules and config.</li>
+<li><strong>Buttons not opening:</strong> Confirm the target file exists with the exact same name.</li>
+<li><strong>Live365 not playing:</strong> Check Live365 station status and embed code.</li>
+<li><strong>Bad song approved:</strong> Delete from library immediately.</li>
+<li><strong>Legal complaint:</strong> Remove content first, investigate second.</li>
 </ul>
-
 </div>
 
 <div class="section">
-
-<h2>Station Message Process</h2>
-
+<h2>14. Training Someone New</h2>
+<p>Before someone helps run WH2, they must understand:</p>
 <ul>
-<li>Open Dashboard</li>
-<li>Edit Station Message</li>
-<li>Click Save Message</li>
-<li>Verify message appears correctly on homepage</li>
+<li>How to login</li>
+<li>How to review submissions</li>
+<li>How to approve/reject music</li>
+<li>How to check the library</li>
+<li>How to update featured creator</li>
+<li>How to update station message</li>
+<li>How to avoid copyright problems</li>
+<li>How to ask ChatGPT for safe code edits</li>
 </ul>
-
 </div>
 
 <div class="section">
-
-<h2>Library Management</h2>
-
-<ul>
-<li>Approved songs are stored inside Music Library</li>
-<li>Review library periodically</li>
-<li>Remove duplicate records</li>
-<li>Remove broken links</li>
-<li>Remove copyrighted content when necessary</li>
-</ul>
-
-</div>
-
-<div class="section">
-
-<h2>Copyright Complaint Process</h2>
-
-<ul>
-<li>Receive complaint</li>
-<li>Document complaint details</li>
-<li>Locate artist record</li>
-<li>Locate approved song</li>
-<li>Temporarily remove content</li>
-<li>Investigate ownership claim</li>
-<li>Restore or permanently remove content</li>
-</ul>
-
-</div>
-
-<div class="section">
-
-<h2>Training New Staff</h2>
-
-<ul>
-<li>Provide dashboard access</li>
-<li>Review operations manual</li>
-<li>Train on submission reviews</li>
-<li>Train on artist management</li>
-<li>Train on copyright procedures</li>
-<li>Train on station operations</li>
-</ul>
-
-</div>
-
-<div class="section">
-
-<h2>Emergency Procedures</h2>
-
-<ul>
-<li>Station not loading → Check dashboard status</li>
-<li>Player offline → Check Live365 status</li>
-<li>Database issue → Check Firebase Console</li>
-<li>Login issue → Verify owner account access</li>
-<li>Broken links → Remove affected records</li>
-<li>Copyright claim → Temporarily remove content immediately</li>
-</ul>
-
-</div>
-
-<div class="section">
-
-<h2>Current WH2 Build Status</h2>
-
+<h2>15. Current Version 1 Build Status</h2>
 <ul>
 <li>Homepage: Active</li>
 <li>Submission Form: Active</li>
+<li>Owner Login: Active</li>
 <li>Owner Dashboard: Active</li>
 <li>Submission Queue: Active</li>
 <li>Music Library: Active</li>
 <li>Artist Database: Active</li>
 <li>Operations Manual: Active</li>
-<li>Live365 Integration: Pending</li>
+<li>Live365 Player: Pending</li>
+<li>Direct File Uploads: Future Upgrade</li>
+<li>Playlist Automation: Future Upgrade</li>
+<li>Advanced Analytics: Future Upgrade</li>
 </ul>
-
 </div>
 
 </div>
 
 <div class="footer">
-WH2 Radio Operations Manual • Version 1
+WH2 Radio • We Human Too • Operations Manual Version 1
 </div>
 
 </body>
