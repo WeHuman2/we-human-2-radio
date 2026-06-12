@@ -103,8 +103,8 @@ WH2 owner controls are connected.
 
 <div class="card">
 <h2>📤 Share Station</h2>
-<p>Copy or share the public WH2 Radio homepage.</p>
-<input id="shareLink" type="text" value="https://wehuman2.github.io/we-human-2-radio/" readonly>
+<p>Copy or share the updated public WH2 Radio homepage.</p>
+<input id="shareLink" type="text" value="https://wehuman2.github.io/we-human-2-radio/?v=wh2final" readonly>
 <button onclick="copyStationLink()">COPY STATION LINK</button>
 <button onclick="shareStation()">SHARE STATION</button>
 </div>
@@ -127,7 +127,7 @@ WH2 owner controls are connected.
 <div class="card">
 <h2>🎧 View Public Site</h2>
 <p>Open the public WH2 Radio homepage.</p>
-<button onclick="location.href='index.html'">VIEW WH2 RADIO</button>
+<button onclick="location.href='index.html?v=wh2final'">VIEW WH2 RADIO</button>
 </div>
 
 </div>
@@ -225,7 +225,7 @@ url:link
 });
 }else{
 navigator.clipboard.writeText(link);
-document.getElementById("statusMessage").innerText="Sharing not supported here, so the link was copied.";
+document.getElementById("statusMessage").innerText="Sharing is not supported here, so the station link was copied.";
 }
 }
 
